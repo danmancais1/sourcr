@@ -1,9 +1,12 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { AppNav } from "./app-nav";
 import { Button } from "@/components/ui/button";
 import { RoleSelectionModal } from "@/components/role-selection-modal";
-import { AppNav } from "./app-nav";
+
+export const dynamic = "force-dynamic";
+
 
 export default async function AppLayout({
   children,

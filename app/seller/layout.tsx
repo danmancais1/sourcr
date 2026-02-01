@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { RoleSelectionModal } from "@/components/role-selection-modal";
 import { SellerNav } from "./seller-nav";
 
+export const dynamic = "force-dynamic";
+
 export default async function SellerLayout({
   children,
 }: {
