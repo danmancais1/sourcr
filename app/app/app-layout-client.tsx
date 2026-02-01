@@ -30,11 +30,11 @@ export function AppLayoutClient({ children }: { children: React.ReactNode }) {
             return;
           }
           if (res.role === "seller") {
-            router.replace("/seller/dashboard");
+            router.replace("/seller");
             setState("redirect");
             return;
           }
-          if (res.role === "investor" && !res.hasWorkspace && (pathname === "/app" || pathname === "/app/dashboard")) {
+          if (res.role === "investor" && !res.hasWorkspace && (pathname === "/app" || pathname === "/app/dashboard" || pathname === "/app/leads")) {
             router.replace("/app/onboarding");
             setState("redirect");
             return;
@@ -84,7 +84,7 @@ export function AppLayoutClient({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-deep-teal-950 flex">
-      <AppSidebar logoHref="/app/dashboard">
+      <AppSidebar logoHref="/app/leads">
         <AppNav />
         <div className="mt-auto pt-4 border-t border-deep-teal-800">
           <form action="/api/auth/signout" method="post">

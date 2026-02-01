@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCurrentWorkspaceId } from "@/lib/workspace";
@@ -16,8 +15,8 @@ export default async function DirectSellersPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-display">Direct Sellers</h1>
-      <p className="text-deep-teal-200">Landlord quiet-sale submissions matched to your buy box.</p>
+      <h1 className="text-display">Landlords</h1>
+      <p className="text-deep-teal-200">Landlord submissions matched to your criteria.</p>
 
       <Card>
         <CardHeader>
@@ -29,23 +28,18 @@ export default async function DirectSellersPage() {
               const submission = m.landlord_submissions?.[0];
 
               return (
-                <li key={m.id} className="py-3">
-                  <Link
-                    href={`/app/messaging?match=${m.id}`}
-                    className="flex items-center justify-between hover:underline"
-                  >
-                    <span>
-                      {submission
-                        ? `${submission.address_line_1}, ${submission.postcode}`
-                        : "—"}
-                      {submission?.contact_name && (
-                        <span className="ml-2 text-body-sm text-deep-teal-200">
-                          ({submission.contact_name})
-                        </span>
-                      )}
-                    </span>
-                    <span className="text-body-sm text-deep-teal-200">{m.status}</span>
-                  </Link>
+                <li key={m.id} className="py-3 flex items-center justify-between">
+                  <span>
+                    {submission
+                      ? `${submission.address_line_1}, ${submission.postcode}`
+                      : "—"}
+                    {submission?.contact_name && (
+                      <span className="ml-2 text-body-sm text-deep-teal-200">
+                        ({submission.contact_name})
+                      </span>
+                    )}
+                  </span>
+                  <span className="text-body-sm text-deep-teal-200">{m.status}</span>
                 </li>
               );
             })}

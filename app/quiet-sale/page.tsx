@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { submitQuietSale } from "./actions";
 import { PropIxLogo } from "@/components/PropIxLogo";
+import { SOURCING_CATEGORIES } from "@/lib/sourcing-categories";
 
 export default function QuietSalePage() {
   const [submitted, setSubmitted] = useState(false);
@@ -112,6 +113,22 @@ export default function QuietSalePage() {
               <div className="space-y-2">
                 <Label htmlFor="contact_phone">Phone (optional)</Label>
                 <Input id="contact_phone" name="contact_phone" type="tel" />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="signal_tag">Which category best describes your situation?</Label>
+                <select
+                  id="signal_tag"
+                  name="signal_tag"
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  <option value="">Select a category…</option>
+                  {SOURCING_CATEGORIES.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.label}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               {error && <p className="text-sm text-destructive">{error}</p>}

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { RoleSelectionModal } from "@/components/role-selection-modal";
 import { SellerNav } from "./seller-nav";
 import { AppSidebar } from "@/components/AppSidebar";
+import { getCurrentWorkspaceId } from "@/lib/workspace";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +19,7 @@ export default async function SellerLayout({
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
+  const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).maybeSingle();
   const role = (profile as any)?.role;
 
   if (!role) {
@@ -26,7 +27,12 @@ export default async function SellerLayout({
   }
 
   if (role === "investor") {
-    redirect("/app/dashboard");
+    redirect("/app/leads");
+  }
+
+  const workspaceId = await getCurrentWorkspaceId(supabase);
+  if (!workspaceId) {
+    redirect("/seller/onboarding");
   }
 
   return (

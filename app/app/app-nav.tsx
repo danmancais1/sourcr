@@ -5,13 +5,9 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
-  { href: "/app/dashboard", label: "Dashboard" },
   { href: "/app/leads", label: "Leads" },
-  { href: "/app/pipeline", label: "Pipeline" },
-  { href: "/app/campaigns", label: "Campaigns" },
-  { href: "/app/templates", label: "Templates" },
-  { href: "/app/direct-sellers", label: "Direct Sellers" },
-  { href: "/app/messaging", label: "Messaging" },
+  { href: "/app/sellers", label: "Sellers" },
+  { href: "/app/dashboard", label: "Dashboard" },
   { href: "/app/settings", label: "Settings" },
 ];
 
@@ -21,7 +17,7 @@ export function AppNav() {
   return (
     <nav className="flex flex-col gap-1">
       {navItems.map((item) => {
-        const isActive = pathname === item.href || (item.href !== "/app/dashboard" && pathname.startsWith(item.href));
+        const isActive = item.href === "/app/leads" ? pathname.startsWith("/app/leads") : (pathname === item.href || pathname.startsWith(item.href + "/"));
         return (
           <Link key={item.href} href={item.href}>
             <Button

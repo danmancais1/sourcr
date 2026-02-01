@@ -1,130 +1,92 @@
-# Prop IX – UK Property Sourcing & Quiet-Sale Marketplace
+# Prop IX
 
-Production-ready MVP SaaS for investors (leads, distress scoring, compliant outreach) and landlords (Quiet Sale submission, matching, messaging).
-
-## Stack
-
-- **Next.js** (App Router) + TypeScript
-- **Supabase** (Auth, Postgres, Storage, RLS)
-- **Stripe** (subscriptions Starter/Pro, customer portal, webhooks)
-- **UI**: shadcn/ui + Tailwind; theme: `#363020`, `#605C4E`, `#A49966`, `#C7C7A6`, `#EAFFDA`
+UK property sourcing and quiet-sale marketplace for investors and sellers. Next.js App Router, TypeScript, Supabase (Auth + Postgres + RLS), Stripe subscriptions.
 
 ## Prerequisites
 
 - Node.js 18+
-- npm or pnpm
-- Supabase account
+- Supabase project
 - Stripe account
 
----
+## Local setup
 
-## 1) Create Supabase project, run migrations, set RLS
+1. **Clone and install**
+   ```bash
+   git clone <repo-url>
+   cd Sourcer
+   npm install
+   ```
 
-1. Go to [supabase.com](https://supabase.com) and create a new project.
-2. In **Project Settings → API**, copy:
-   - **Project URL** → `NEXT_PUBLIC_SUPABASE_URL`
-   - **anon public** key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - **service_role** key → `SUPABASE_SERVICE_ROLE_KEY` (keep secret)
-3. In **SQL Editor**, run the contents of `supabase/migrations/20250101000000_initial_schema.sql` (creates all tables and RLS).
-4. In **Authentication → Providers**, enable Email (and optionally others). Set **Site URL** and **Redirect URLs** to your app URL (e.g. `http://localhost:3000`, `https://your-app.vercel.app`). Add both local and production URLs if you use both.
-5. **Authentication → Providers → Email**: If "Confirm email" is **enabled**, new users must click the confirmation link before they can log in (they’ll see "Check your email to confirm"). For instant signup without email confirmation, **disable** "Confirm email".
+2. **Environment**
+   - Copy `.env.example` to `.env.local`
+   - Fill in Supabase URL and keys (Dashboard → Settings → API)
+   - Fill in Stripe keys and Price IDs (Dashboard → Developers → API keys; Products → copy Price IDs)
+   - Set `NEXT_PUBLIC_APP_URL=http://localhost:3000`
 
----
+3. **Supabase database**
+   ```bash
+   npx supabase login
+   npx supabase link --project-ref <YOUR_PROJECT_REF>
+   npx supabase db push
+   ```
+   Create an `avatars` bucket in Supabase Dashboard → Storage (public) for profile photos.
 
-## 2) Create Stripe products/prices, set webhooks
+4. **Stripe webhook (local)**
+   - Install Stripe CLI, then: `stripe listen --forward-to localhost:3000/api/webhooks/stripe`
+   - Copy the webhook signing secret into `.env.local` as `STRIPE_WEBHOOK_SECRET`
 
-1. In [Stripe Dashboard](https://dashboard.stripe.com):
-   - **Products**: create two products, e.g. "Starter" and "Pro".
-   - For each, add a **recurring price** (e.g. £29/month, £79/month) and copy the **Price ID**.
-   - Set `STRIPE_STARTER_PRICE_ID` and `STRIPE_PRO_PRICE_ID` in env.
-2. **Developers → API keys**: copy **Secret key** → `STRIPE_SECRET_KEY`.
-3. **Developers → Webhooks**: Add endpoint:
-   - URL: `https://your-app.vercel.app/api/webhooks/stripe` (or `http://localhost:3000/api/webhooks/stripe` for local testing with Stripe CLI).
-   - Events: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`.
-   - Copy **Signing secret** → `STRIPE_WEBHOOK_SECRET`.
+5. **Run**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000).
 
----
+## Deploy to production (Vercel)
 
-## 3) Add env vars
+1. **Push code**
+   ```bash
+   git add .
+   git commit -m "Prepare production deploy"
+   git push origin main
+   ```
 
-1. Copy `.env.example` to `.env.local`.
-2. Fill in all required values (Supabase URL/keys, Stripe keys/price IDs, `NEXT_PUBLIC_APP_URL`).
-3. Optional: API keys for Companies House, EPC, Resend, Twilio (can also be validated and stored per workspace in **Settings → API keys**).
+2. **Vercel**
+   - Go to [vercel.com](https://vercel.com) and import your repo (or connect existing project)
+   - Framework: **Next.js** (auto-detected)
+   - Add **Environment Variables** (Settings → Environment Variables). Use the same names as `.env.example`; set all required vars for **Production** (and Preview if you use preview deploys):
+     - `NEXT_PUBLIC_SUPABASE_URL`
+     - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+     - `SUPABASE_SERVICE_ROLE_KEY`
+     - `NEXT_PUBLIC_APP_URL` → your production URL (e.g. `https://your-app.vercel.app`)
+     - `STRIPE_SECRET_KEY`
+     - `STRIPE_WEBHOOK_SECRET` (production webhook secret; see step 3)
+     - `STRIPE_STARTER_PRICE_ID`
+     - `STRIPE_PRO_PRICE_ID`
+   - Deploy. After the first deploy, note your production URL.
 
----
+3. **Stripe production webhook**
+   - Stripe Dashboard → Developers → Webhooks → Add endpoint
+   - URL: `https://<your-production-domain>/api/webhooks/stripe`
+   - Events: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`
+   - Copy the **Signing secret** and set it as `STRIPE_WEBHOOK_SECRET` in Vercel (Production), then redeploy if needed.
 
-## 4) Run locally
+4. **Supabase**
+   - Ensure all migrations are applied (e.g. run `npx supabase db push` from your machine with the same linked project)
+   - In Authentication → URL Configuration, set **Site URL** to your production URL and add it to **Redirect URLs**
 
-```bash
-npm install
-npm run dev
-```
+5. **Optional**
+   - Resend/Twilio: set `RESEND_API_KEY`, `RESEND_FROM`, `TWILIO_*` in Vercel if you use email/SMS
+   - Cron: set `CRON_SECRET` if you use the refresh-ppd cron route
 
-Open [http://localhost:3000](http://localhost:3000). Sign up, create a workspace (onboarding will redirect to Stripe checkout). After payment, you can use Dashboard, Leads, Pipeline, Campaigns, Templates, Direct Sellers, Messaging, Settings.
+## Scripts
 
-### Seed demo data
+| Command        | Description              |
+|----------------|--------------------------|
+| `npm run dev`  | Start dev server         |
+| `npm run build`| Production build         |
+| `npm run start`| Start production server  |
+| `npm run db:push` | Apply Supabase migrations |
 
-After at least one user exists (sign up once):
+## Env reference
 
-```bash
-npm run seed
-```
-
-This creates a workspace, 15 leads, 5 landlord submissions, 6 investor buy boxes, and 3 matches.
-
----
-
-## 5) Deploy to Vercel
-
-1. Push the repo to GitHub and import the project in [Vercel](https://vercel.com).
-2. Add all env vars from `.env.example` in **Project Settings → Environment Variables**.
-3. Deploy. Set **Root Directory** to the repo root.
-4. In Supabase **Authentication → URL Configuration**, set **Site URL** and **Redirect URLs** to your Vercel URL (e.g. `https://propix.vercel.app`).
-5. In Stripe **Webhooks**, set the endpoint URL to `https://your-vercel-domain.vercel.app/api/webhooks/stripe`.
-
-### Cron: Refresh PPD (Land Registry Price Paid Data)
-
-To refresh PPD on a schedule (e.g. monthly):
-
-1. In Vercel **Project → Settings → Cron Jobs**, add a cron job:
-   - Path: `/api/cron/refresh-ppd`
-   - Schedule: e.g. `0 0 1 * *` (1st of month at midnight).
-2. Set `CRON_SECRET` in env and configure the cron to send `Authorization: Bearer <CRON_SECRET>`.
-
-Alternatively, use **Settings → Land Registry PPD → Refresh PPD (manual)** in the app (requires an authenticated workspace).
-
----
-
-## Core flows
-
-- **Investors**: Dashboard → Leads (import CSV, filters) → Pipeline (kanban) → Campaigns (templates, assisted send) → Direct Sellers (matches) → Messaging.
-- **Landlords**: Public **Quiet Sale** form → submission → matching to investors → messaging.
-- **Settings**: Workspace name, API keys (Companies House, EPC, Resend, Twilio) with validation, billing (Stripe customer portal), Land Registry PPD refresh.
-
-## Integrations (real, no placeholders)
-
-- **Companies House API**: company search, profile, insolvency, charges (API key in Settings).
-- **EPC Open Data**: domestic EPC by postcode/address (email:key in Settings).
-- **The Gazette**: insolvency notices search (company/director name).
-- **Land Registry PPD**: CSV import, postcode sector median and last 10 sales (comps).
-
-## Outreach & compliance
-
-- **Letters**: PDF from templates (assisted send).
-- **Email / SMS**: Resend and Twilio; assisted sending only by default; suppression list, opt-out, audit log, daily limits (Starter 25, Pro 200); block unless `consent_status = consented` or B2B basis confirmed on campaign.
-
-## Ship checklist (before going live)
-
-- **Supabase → Authentication → URL Configuration**
-  - **Site URL**: Your production URL (e.g. `https://your-app.vercel.app`).
-  - **Redirect URLs**: Add `https://your-app.vercel.app/**`, and `http://localhost:3000/**` if you still use local dev. Without these, sign-in and magic links will fail.
-- **Supabase → Authentication → Providers → Email**
-  - **Confirm email**: On = users must click the confirmation link before logging in. Off = instant sign-in (useful for MVP testing).
-- **Vercel → Project → Environment Variables**
-  - Set every variable from `.env.example` for Production (and Preview if you use preview deploys). Missing `NEXT_PUBLIC_SUPABASE_*` causes "Missing Supabase env vars" and blank/error pages.
-- **Stripe**
-  - Webhook endpoint URL must match production (e.g. `https://your-app.vercel.app/api/webhooks/stripe`). Use the correct **Signing secret** for that endpoint.
-
-## Errors
-
-Errors are logged with clear messages (context: `userId`, `workspaceId`, operation). Check server logs and Supabase/Stripe dashboards for details.
+See `.env.example` for all variable names. Required for minimal run: Supabase (URL + anon + service role), `NEXT_PUBLIC_APP_URL`, Stripe (secret, webhook secret, both price IDs).

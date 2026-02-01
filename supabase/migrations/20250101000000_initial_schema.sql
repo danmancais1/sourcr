@@ -1,8 +1,8 @@
--- Enable UUID extension
+-- Enable UUID extension (optional; we use gen_random_uuid() built-in)
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Profiles (extends auth.users)
-CREATE TABLE public.profiles (
+CREATE TABLE IF NOT EXISTS public.profiles (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   full_name TEXT,
   avatar_url TEXT,
@@ -12,8 +12,8 @@ CREATE TABLE public.profiles (
 );
 
 -- Workspaces (multi-tenant)
-CREATE TABLE public.workspaces (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.workspaces (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
   slug TEXT UNIQUE NOT NULL,
   stripe_customer_id TEXT,
@@ -25,8 +25,8 @@ CREATE TABLE public.workspaces (
 );
 
 -- Workspace members
-CREATE TABLE public.workspace_members (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.workspace_members (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   workspace_id UUID NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   role TEXT NOT NULL DEFAULT 'member' CHECK (role IN ('owner', 'admin', 'member')),
@@ -34,12 +34,12 @@ CREATE TABLE public.workspace_members (
   UNIQUE(workspace_id, user_id)
 );
 
-CREATE INDEX idx_workspace_members_workspace ON public.workspace_members(workspace_id);
-CREATE INDEX idx_workspace_members_user ON public.workspace_members(user_id);
+CREATE INDEX IF NOT EXISTS idx_workspace_members_workspace ON public.workspace_members(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_workspace_members_user ON public.workspace_members(user_id);
 
 -- API keys (per-workspace, encrypted in app; we store which keys are set)
-CREATE TABLE public.workspace_api_keys (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.workspace_api_keys (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   workspace_id UUID NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
   key_type TEXT NOT NULL CHECK (key_type IN ('companies_house', 'epc', 'resend', 'twilio')),
   is_valid BOOLEAN NOT NULL DEFAULT false,
@@ -50,8 +50,8 @@ CREATE TABLE public.workspace_api_keys (
 );
 
 -- Owners (lead/contact entity)
-CREATE TABLE public.owners (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.owners (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   workspace_id UUID NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
   email TEXT,
@@ -62,11 +62,11 @@ CREATE TABLE public.owners (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_owners_workspace ON public.owners(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_owners_workspace ON public.owners(workspace_id);
 
 -- Properties
-CREATE TABLE public.properties (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.properties (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   workspace_id UUID NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
   address_line_1 TEXT NOT NULL,
   address_line_2 TEXT,
@@ -76,12 +76,12 @@ CREATE TABLE public.properties (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_properties_workspace ON public.properties(workspace_id);
-CREATE INDEX idx_properties_postcode ON public.properties(postcode);
+CREATE INDEX IF NOT EXISTS idx_properties_workspace ON public.properties(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_properties_postcode ON public.properties(postcode);
 
 -- Leads
-CREATE TABLE public.leads (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.leads (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   workspace_id UUID NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
   property_id UUID REFERENCES public.properties(id) ON DELETE SET NULL,
   owner_id UUID REFERENCES public.owners(id) ON DELETE SET NULL,
@@ -94,12 +94,12 @@ CREATE TABLE public.leads (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_leads_workspace ON public.leads(workspace_id);
-CREATE INDEX idx_leads_pipeline ON public.leads(workspace_id, pipeline_stage);
+CREATE INDEX IF NOT EXISTS idx_leads_workspace ON public.leads(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_leads_pipeline ON public.leads(workspace_id, pipeline_stage);
 
 -- Signals (manual or from integrations)
-CREATE TABLE public.signals (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.signals (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   lead_id UUID NOT NULL REFERENCES public.leads(id) ON DELETE CASCADE,
   signal_type TEXT NOT NULL,
   severity INTEGER CHECK (severity >= 1 AND severity <= 5),
@@ -107,11 +107,11 @@ CREATE TABLE public.signals (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_signals_lead ON public.signals(lead_id);
+CREATE INDEX IF NOT EXISTS idx_signals_lead ON public.signals(lead_id);
 
 -- Templates (letters, email, SMS)
-CREATE TABLE public.templates (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.templates (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   workspace_id UUID NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
   channel TEXT NOT NULL CHECK (channel IN ('letter', 'email', 'sms')),
@@ -121,11 +121,11 @@ CREATE TABLE public.templates (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_templates_workspace ON public.templates(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_templates_workspace ON public.templates(workspace_id);
 
 -- Campaigns
-CREATE TABLE public.campaigns (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.campaigns (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   workspace_id UUID NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
   template_id UUID REFERENCES public.templates(id) ON DELETE SET NULL,
@@ -135,11 +135,11 @@ CREATE TABLE public.campaigns (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_campaigns_workspace ON public.campaigns(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_campaigns_workspace ON public.campaigns(workspace_id);
 
 -- Campaign steps (which lead/owner gets which message)
-CREATE TABLE public.campaign_steps (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.campaign_steps (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   campaign_id UUID NOT NULL REFERENCES public.campaigns(id) ON DELETE CASCADE,
   lead_id UUID REFERENCES public.leads(id) ON DELETE SET NULL,
   owner_id UUID NOT NULL REFERENCES public.owners(id) ON DELETE CASCADE,
@@ -148,11 +148,11 @@ CREATE TABLE public.campaign_steps (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_campaign_steps_campaign ON public.campaign_steps(campaign_id);
+CREATE INDEX IF NOT EXISTS idx_campaign_steps_campaign ON public.campaign_steps(campaign_id);
 
 -- Outbox (audit of sent messages)
-CREATE TABLE public.outbox_messages (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.outbox_messages (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   workspace_id UUID NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
   campaign_id UUID REFERENCES public.campaigns(id) ON DELETE SET NULL,
   channel TEXT NOT NULL CHECK (channel IN ('letter', 'email', 'sms')),
@@ -165,12 +165,12 @@ CREATE TABLE public.outbox_messages (
   metadata JSONB
 );
 
-CREATE INDEX idx_outbox_workspace ON public.outbox_messages(workspace_id);
-CREATE INDEX idx_outbox_sent_at ON public.outbox_messages(sent_at);
+CREATE INDEX IF NOT EXISTS idx_outbox_workspace ON public.outbox_messages(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_outbox_sent_at ON public.outbox_messages(sent_at);
 
 -- Suppression list
-CREATE TABLE public.suppression_list (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.suppression_list (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   workspace_id UUID NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
   email TEXT,
   phone TEXT,
@@ -180,11 +180,11 @@ CREATE TABLE public.suppression_list (
   UNIQUE(workspace_id, phone)
 );
 
-CREATE INDEX idx_suppression_workspace ON public.suppression_list(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_suppression_workspace ON public.suppression_list(workspace_id);
 
 -- Audit log
-CREATE TABLE public.audit_log (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.audit_log (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   workspace_id UUID NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
   user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   action TEXT NOT NULL,
@@ -194,12 +194,12 @@ CREATE TABLE public.audit_log (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_audit_workspace ON public.audit_log(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_audit_workspace ON public.audit_log(workspace_id);
 
 -- Landlord submissions (public Quiet Sale form)
-CREATE TABLE public.landlord_submissions (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  public_token TEXT UNIQUE NOT NULL DEFAULT encode(gen_random_bytes(16), 'hex'),
+CREATE TABLE IF NOT EXISTS public.landlord_submissions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  public_token TEXT UNIQUE NOT NULL DEFAULT md5(gen_random_uuid()::text || clock_timestamp()::text),
   address_line_1 TEXT NOT NULL,
   address_line_2 TEXT,
   city TEXT,
@@ -212,11 +212,11 @@ CREATE TABLE public.landlord_submissions (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_landlord_submissions_token ON public.landlord_submissions(public_token);
+CREATE INDEX IF NOT EXISTS idx_landlord_submissions_token ON public.landlord_submissions(public_token);
 
 -- Investor buy box (investor interest criteria / inbox)
-CREATE TABLE public.investor_buy_box (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.investor_buy_box (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   workspace_id UUID NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
   postcodes TEXT[],
@@ -227,11 +227,11 @@ CREATE TABLE public.investor_buy_box (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_investor_buy_box_workspace ON public.investor_buy_box(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_investor_buy_box_workspace ON public.investor_buy_box(workspace_id);
 
 -- Matches (landlord submission matched to investor)
-CREATE TABLE public.matches (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.matches (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   landlord_submission_id UUID NOT NULL REFERENCES public.landlord_submissions(id) ON DELETE CASCADE,
   workspace_id UUID NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
   investor_buy_box_id UUID REFERENCES public.investor_buy_box(id) ON DELETE SET NULL,
@@ -240,12 +240,12 @@ CREATE TABLE public.matches (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_matches_workspace ON public.matches(workspace_id);
-CREATE INDEX idx_matches_submission ON public.matches(landlord_submission_id);
+CREATE INDEX IF NOT EXISTS idx_matches_workspace ON public.matches(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_matches_submission ON public.matches(landlord_submission_id);
 
 -- Messages (investor <-> landlord thread)
-CREATE TABLE public.messages (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.messages (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   match_id UUID NOT NULL REFERENCES public.matches(id) ON DELETE CASCADE,
   sender_type TEXT NOT NULL CHECK (sender_type IN ('investor', 'landlord', 'system')),
   sender_workspace_id UUID REFERENCES public.workspaces(id) ON DELETE SET NULL,
@@ -253,23 +253,23 @@ CREATE TABLE public.messages (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_messages_match ON public.messages(match_id);
+CREATE INDEX IF NOT EXISTS idx_messages_match ON public.messages(match_id);
 
 -- cache_http for API response caching
-CREATE TABLE public.cache_http (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.cache_http (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   cache_key TEXT NOT NULL UNIQUE,
   payload JSONB NOT NULL,
   expires_at TIMESTAMPTZ NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_cache_http_key ON public.cache_http(cache_key);
-CREATE INDEX idx_cache_http_expires ON public.cache_http(expires_at);
+CREATE INDEX IF NOT EXISTS idx_cache_http_key ON public.cache_http(cache_key);
+CREATE INDEX IF NOT EXISTS idx_cache_http_expires ON public.cache_http(expires_at);
 
 -- PPD transactions (Land Registry Price Paid Data)
-CREATE TABLE public.ppd_transactions (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS public.ppd_transactions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   transaction_id TEXT NOT NULL,
   price INTEGER NOT NULL,
   transfer_date DATE NOT NULL,
@@ -285,12 +285,12 @@ CREATE TABLE public.ppd_transactions (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_ppd_postcode ON public.ppd_transactions(postcode);
-CREATE INDEX idx_ppd_transfer_date ON public.ppd_transactions(transfer_date);
-CREATE UNIQUE INDEX idx_ppd_transaction_id ON public.ppd_transactions(transaction_id);
+CREATE INDEX IF NOT EXISTS idx_ppd_postcode ON public.ppd_transactions(postcode);
+CREATE INDEX IF NOT EXISTS idx_ppd_transfer_date ON public.ppd_transactions(transfer_date);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_ppd_transaction_id ON public.ppd_transactions(transaction_id);
 
 -- Daily send count (for limits: Starter 25, Pro 200)
-CREATE TABLE public.daily_send_count (
+CREATE TABLE IF NOT EXISTS public.daily_send_count (
   workspace_id UUID NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
   date_utc DATE NOT NULL,
   count INTEGER NOT NULL DEFAULT 0,
@@ -307,6 +307,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();

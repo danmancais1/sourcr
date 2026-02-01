@@ -20,7 +20,7 @@ export function OnboardingClient() {
           return;
         }
         if (state.hasWorkspace) {
-          router.replace("/app/dashboard");
+          router.replace("/app/leads");
           return;
         }
         setPlan(state.plan);

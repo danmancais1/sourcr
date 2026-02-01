@@ -16,7 +16,7 @@ export async function getAppSession(): Promise<AppSession> {
     return { role: null, hasWorkspace: false };
   }
 
-  const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
+  const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).maybeSingle();
   const role = (profile as { role?: string } | null)?.role as "investor" | "seller" | null | undefined;
   if (!role || (role !== "investor" && role !== "seller")) {
     return { role: null, hasWorkspace: false };
@@ -27,7 +27,7 @@ export async function getAppSession(): Promise<AppSession> {
     .select("workspace_id")
     .eq("user_id", user.id)
     .limit(1)
-    .single();
+    .maybeSingle();
 
   return {
     role,

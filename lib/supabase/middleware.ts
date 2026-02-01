@@ -14,22 +14,27 @@ export async function updateSession(request: NextRequest) {
       return response;
     }
 
-    const supabase = createServerClient(
-      supabaseUrl,
-      supabaseAnonKey,
-      {
-        cookies: {
-          getAll() {
-            return request.cookies.getAll();
-          },
-          setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value }) =>
-              response.cookies.set(name, value)
-            );
-          },
+    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
         },
-      }
-    );
+        setAll(cookiesToSet: { name: string; value: string; options?: object }[]) {
+          cookiesToSet.forEach(({ name, value }) =>
+            response.cookies.set(name, value)
+          );
+        },
+        get(name: string) {
+          return request.cookies.get(name)?.value;
+        },
+        set(name: string, value: string) {
+          response.cookies.set(name, value);
+        },
+        remove(name: string) {
+          response.cookies.set(name, "", { maxAge: 0 });
+        },
+      },
+    });
 
     const {
       data: { user },

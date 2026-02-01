@@ -37,6 +37,23 @@ export async function createClient() {
           // Ignore in Server Components
         }
       },
+      get(name: string) {
+        return cookieStore.get(name)?.value;
+      },
+      set(name: string, value: string, options: Parameters<typeof cookieStore.set>[2]) {
+        try {
+          cookieStore.set(name, value, options);
+        } catch {
+          // Ignore in Server Components
+        }
+      },
+      remove(name: string, options: Parameters<typeof cookieStore.set>[2]) {
+        try {
+          cookieStore.set(name, "", { ...options, maxAge: 0 });
+        } catch {
+          // Ignore in Server Components
+        }
+      },
     },
   });
 }
@@ -51,6 +68,18 @@ export async function createServiceRoleClient() {
     return throwOnUseProxy(SERVICE_ROLE_ENV_ERROR);
   }
   return createServerClient(url, key, {
-    cookies: {},
+    cookies: {
+      getAll() {
+        return [];
+      },
+      setAll() {
+        // Service role does not use cookies; no-op
+      },
+      get() {
+        return undefined;
+      },
+      set() {},
+      remove() {},
+    },
   });
 }
