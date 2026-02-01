@@ -1,8 +1,12 @@
 import Stripe from "stripe";
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  typescript: true,
-});
+let _stripe: Stripe | null = null;
 
-export const STARTER_PRICE_ID = process.env.STRIPE_STARTER_PRICE_ID!;
-export const PRO_PRICE_ID = process.env.STRIPE_PRO_PRICE_ID!;
+export function getStripe(): Stripe {
+  if (!_stripe) {
+    _stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      typescript: true,
+    });
+  }
+  return _stripe;
+}

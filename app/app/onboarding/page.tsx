@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { stripe, STARTER_PRICE_ID, PRO_PRICE_ID } from "@/lib/stripe";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -53,7 +52,7 @@ export default async function OnboardingPage({
               Continue to payment
             </Button>
           </form>
-          <p className="mt-4 text-center text-sm text-muted-foreground">
+          <p className="mt-4 text-center text-body-sm text-deep-teal-200">
             <Link href="/app/dashboard" className="underline">
               I already have a workspace
             </Link>
