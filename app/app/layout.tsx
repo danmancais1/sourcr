@@ -1,13 +1,12 @@
 import { redirect } from "next/navigation";
-import Link from "next/link";
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { AppNav } from "./app-nav";
 import { Button } from "@/components/ui/button";
 import { RoleSelectionModal } from "@/components/role-selection-modal";
-import { PropIxLogo } from "@/components/PropIxLogo";
+import { AppSidebar } from "@/components/AppSidebar";
 
 export const dynamic = "force-dynamic";
-
 
 export default async function AppLayout({
   children,
@@ -33,22 +32,33 @@ export default async function AppLayout({
     redirect("/seller/dashboard");
   }
 
+  // Investors must complete onboarding (workspace + Stripe) before accessing the app
+  const pathname = (await headers()).get("x-pathname") ?? "";
+  if (pathname !== "/app/onboarding") {
+    const { data: membership } = await supabase
+      .from("workspace_members")
+      .select("workspace_id")
+      .eq("user_id", user.id)
+      .limit(1)
+      .single();
+    if (!membership?.workspace_id) {
+      redirect("/app/onboarding");
+    }
+  }
+
   return (
     <div className="min-h-screen bg-deep-teal-950 flex">
-      <aside className="w-64 flex-shrink-0 border-r border-deep-teal-800 bg-deep-teal-950">
-        <div className="sticky top-0 flex h-screen flex-col p-4">
-          <PropIxLogo href="/app/dashboard" size="sm" />
-          <AppNav />
-          <div className="mt-auto pt-4 border-t border-deep-teal-800">
-            <form action="/api/auth/signout" method="post">
-              <Button type="submit" variant="ghost" size="sm" className="w-full justify-start text-deep-teal-200 hover:text-deep-teal-50">
-                Sign out
-              </Button>
-            </form>
-          </div>
+      <AppSidebar logoHref="/app/dashboard">
+        <AppNav />
+        <div className="mt-auto pt-4 border-t border-deep-teal-800">
+          <form action="/api/auth/signout" method="post">
+            <Button type="submit" variant="ghost" size="sm" className="w-full justify-start text-deep-teal-200 hover:text-deep-teal-50 min-h-[44px] touch-manipulation">
+              Sign out
+            </Button>
+          </form>
         </div>
-      </aside>
-      <main className="flex-1 overflow-auto p-6">{children}</main>
+      </AppSidebar>
+      <main className="flex-1 overflow-auto p-4 md:p-6 pt-14 md:pt-6">{children}</main>
     </div>
   );
 }

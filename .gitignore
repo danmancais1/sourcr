@@ -6,29 +6,22 @@ node_modules/
 # Build / Next
 .next/
 out/
-build
-*.tsbuildinfo
-next-env.d.ts
+build/
+dist/
 
-# Env (keep .env.example; never commit .env.local or secrets)
+# Env (keep .env.example for docs)
 .env
-.env*.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.local
+.env.*.local
 
 # Vercel
 .vercel
 
-# IDE / OS
+# IDE
 .vscode/
 .idea/
-.DS_Store
-*.log
+
+# Debug / logs
 npm-debug.log*
-
-# Supabase
-.supabase/
-
-# Logo source (cropped output is public/logo.png)
-public/logo-source.png
+.DS_Store
+*.tsbuildinfo

@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 
 export async function setUserRole(role: "investor" | "seller") {
@@ -8,5 +9,25 @@ export async function setUserRole(role: "investor" | "seller") {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
-  await supabase.from("profiles").update({ role, updated_at: new Date().toISOString() }).eq("id", user.id);
+
+  const { data: updated, error } = await supabase
+    .from("profiles")
+    .update({ role, updated_at: new Date().toISOString() })
+    .eq("id", user.id)
+    .select("id")
+    .single();
+
+  if (error) {
+    console.error("setUserRole failed:", error.message);
+    throw new Error(error.message || "Failed to save your choice. Please try again.");
+  }
+  if (!updated) {
+    console.error("setUserRole: no profile row updated for user", user.id);
+    throw new Error("Profile not found. Please refresh the page and try again.");
+  }
+
+  revalidatePath("/app");
+  revalidatePath("/app/dashboard");
+  revalidatePath("/seller");
+  revalidatePath("/seller/dashboard");
 }

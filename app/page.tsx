@@ -82,21 +82,21 @@ export default function HomePage() {
 
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-deep-teal-800/80 bg-deep-teal-950/90 backdrop-blur-xl">
-        <div className="container mx-auto flex h-16 items-center justify-between px-6">
+        <div className="container mx-auto flex h-14 md:h-16 items-center justify-between gap-4 px-4 md:px-6">
           <PropIxLogo href="/" size="sm" />
-          <nav className="flex items-center gap-2">
+          <nav className="flex items-center gap-1 sm:gap-2">
             <Link href="/pricing">
-              <Button variant="ghost" size="sm" className="text-deep-teal-100 hover:text-deep-teal-50">
+              <Button variant="ghost" size="sm" className="min-h-[44px] touch-manipulation text-deep-teal-100 hover:text-deep-teal-50 px-3 md:px-4">
                 Pricing
               </Button>
             </Link>
             <Link href="/login">
-              <Button variant="ghost" size="sm" className="text-deep-teal-100 hover:text-deep-teal-50">
+              <Button variant="ghost" size="sm" className="min-h-[44px] touch-manipulation text-deep-teal-100 hover:text-deep-teal-50 px-3 md:px-4">
                 Log in
               </Button>
             </Link>
             <Link href="/signup">
-              <Button size="sm" className="premium-button">Get started</Button>
+              <Button size="sm" className="premium-button min-h-[44px] touch-manipulation px-4 md:px-6">Get started</Button>
             </Link>
           </nav>
         </div>
@@ -109,7 +109,7 @@ export default function HomePage() {
       <StatsBar />
 
       {/* Why Prop IX – tilted benefit cards */}
-      <section className="container mx-auto px-6 py-24">
+      <section className="container mx-auto px-4 md:px-6 py-16 md:py-24">
         <h2 className="text-section font-bold text-deep-teal-50 text-center mb-4">
           Why choose Prop IX?
         </h2>
@@ -131,9 +131,9 @@ export default function HomePage() {
       </section>
 
       {/* Product showcase – one platform + mockup */}
-      <section className="border-y border-deep-teal-800/80 bg-deep-teal-900/30 py-24 shadow-[inset_0_0_80px_rgba(1,205,158,0.06)]">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <section className="border-y border-deep-teal-800/80 bg-deep-teal-900/30 py-16 md:py-24 shadow-[inset_0_0_80px_rgba(1,205,158,0.06)]">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="grid lg:grid-cols-2 gap-10 md:gap-16 items-center">
             <div>
               <h2 className="text-section font-bold text-deep-teal-50 mb-4">
                 One platform for investors and sellers
@@ -162,7 +162,7 @@ export default function HomePage() {
       </section>
 
       {/* How it works – two columns */}
-      <section className="container mx-auto px-6 py-24">
+      <section className="container mx-auto px-4 md:px-6 py-16 md:py-24">
         <h2 className="text-section font-bold text-deep-teal-50 text-center mb-4">
           How it works
         </h2>
@@ -210,15 +210,15 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className="bg-deep-teal-900/40 py-24 border-y border-deep-teal-800/80">
-        <div className="container mx-auto px-6">
+      <section className="bg-deep-teal-900/40 py-16 md:py-24 border-y border-deep-teal-800/80">
+        <div className="container mx-auto px-4 md:px-6">
           <h2 className="text-section font-bold text-deep-teal-50 text-center mb-4">
             Trusted by investors and sellers
           </h2>
           <p className="text-body text-deep-teal-300 text-center max-w-2xl mx-auto mb-14">
             Join a growing community who use Prop IX for compliant sourcing and discreet sales.
           </p>
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
             {testimonials.map((t, i) => (
               <Card key={i} className="border-deep-teal-700/80 bg-deep-teal-950/60">
                 <CardContent className="p-6">
@@ -237,22 +237,22 @@ export default function HomePage() {
       <FAQ />
 
       {/* Final CTA */}
-      <section className="border-t border-deep-teal-800/80 bg-deep-teal-950/80 py-24 shadow-[inset_0_0_100px_rgba(1,205,158,0.06)]">
-        <div className="container mx-auto px-6 text-center">
+      <section className="border-t border-deep-teal-800/80 bg-deep-teal-950/80 py-16 md:py-24 shadow-[inset_0_0_100px_rgba(1,205,158,0.06)]">
+        <div className="container mx-auto px-4 md:px-6 text-center">
           <h2 className="text-section font-bold text-deep-teal-50 mb-4">
             Ready to take control of your property pipeline?
           </h2>
           <p className="text-body-lg text-deep-teal-300 mb-10 max-w-2xl mx-auto">
             Join investors and sellers who use Prop IX for secure, compliant, and data-driven deals.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4">
             <Link href="/signup">
-              <Button size="lg" className="premium-button text-label px-10 py-4">
+              <Button size="lg" className="premium-button text-label min-h-[48px] touch-manipulation px-8 md:px-10 py-4">
                 Get started now
               </Button>
             </Link>
             <Link href="/pricing">
-              <Button size="lg" variant="outline" className="border-deep-teal-600 text-deep-teal-300 hover:bg-deep-teal-800">
+              <Button size="lg" variant="outline" className="min-h-[48px] touch-manipulation border-deep-teal-600 text-deep-teal-300 hover:bg-deep-teal-800 px-8 md:px-10 py-4">
                 View pricing
               </Button>
             </Link>
@@ -261,8 +261,8 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-deep-teal-800 py-12">
-        <div className="container mx-auto px-6">
+      <footer className="border-t border-deep-teal-800 py-8 md:py-12">
+        <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <p className="text-body-sm text-deep-teal-400">
               © 2026 Prop IX. All rights reserved.

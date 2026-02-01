@@ -1,16 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/lib/supabase/client";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const confirmEmailMessage = searchParams.get("message") === "confirm_email";
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -43,11 +45,16 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-deep-teal-950 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-deep-teal-950 px-4 py-8">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Log in</CardTitle>
           <CardDescription>Sign in to your Prop IX account.</CardDescription>
+          {confirmEmailMessage && (
+            <p className="mt-2 rounded-lg bg-deep-teal-800/80 p-3 text-body-sm text-deep-teal-100">
+              Check your email and click the confirmation link to verify your account, then sign in below.
+            </p>
+          )}
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -73,5 +80,13 @@ export default function LoginPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-deep-teal-950">Loading…</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }

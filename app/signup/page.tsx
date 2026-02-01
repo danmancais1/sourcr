@@ -15,6 +15,7 @@ function SignupForm() {
   const plan = searchParams.get("plan") ?? "starter";
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [emailConfirmationSent, setEmailConfirmationSent] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -44,11 +45,12 @@ function SignupForm() {
         return;
       }
       if (data.user && !data.session) {
-        router.push("/login?message=confirm_email");
+        setEmailConfirmationSent(true);
         return;
       }
       if (data.session) {
-        router.push("/app/onboarding?plan=" + plan);
+        const planParam = plan === "pro" ? "?plan=pro" : "";
+        router.push("/app" + planParam);
         router.refresh();
       }
     } catch (err) {
@@ -59,8 +61,31 @@ function SignupForm() {
     }
   }
 
+  if (emailConfirmationSent) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-deep-teal-950 px-4 py-8">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Check your email</CardTitle>
+            <CardDescription>
+              We&apos;ve sent you a confirmation link. Click the link in the email to verify your account, then come back here to log in.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-body-sm text-deep-teal-200">
+              If you don&apos;t see the email, check your spam or promotions folder.
+            </p>
+            <Link href="/login?message=confirm_email" className="block">
+              <Button className="w-full">Go to log in</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-deep-teal-950 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-deep-teal-950 px-4 py-8">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Create account</CardTitle>

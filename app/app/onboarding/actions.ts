@@ -57,6 +57,9 @@ export async function createWorkspaceAndCheckout(formData: FormData) {
     cancel_url: `${baseUrl}/app/onboarding`,
     client_reference_id: workspace.id,
     customer_email: user.email,
+    subscription_data: {
+      metadata: { workspace_id: workspace.id },
+    },
   });
 
   if (session.url) redirect(session.url);
