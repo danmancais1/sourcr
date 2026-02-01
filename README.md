@@ -87,6 +87,39 @@ UK property sourcing and quiet-sale marketplace for investors and sellers. Next.
 | `npm run start`| Start production server  |
 | `npm run db:push` | Apply Supabase migrations |
 
+## Signals: Companies House connector
+
+The Companies House connector is the first “Signals” data source for the UK motivated seller lead engine (financial distress). It pulls CH data, maps to internal signals, and stores them in Supabase.
+
+**Environment variables**
+
+- `COMPANIES_HOUSE_API_KEY` — Your Companies House API key (Basic Auth username; password blank).
+- `COMPANIES_HOUSE_BASE_URL` — Optional; defaults to `https://api.company-information.service.gov.uk`.
+- `SUPABASE_SERVICE_ROLE_KEY` — Required for the run and seed routes (server-only; never expose to client).
+
+**Apply migration**
+
+Run `npx supabase db push` so the `watchlist_companies`, `signal_events`, and `signal_runs` tables exist.
+
+**API routes (server-only; use service role where needed)**
+
+1. **Test single company (no DB write)**  
+   `GET /api/signals/companies-house/test?companyNumber=XXXXXX`  
+   Returns profile plus mapped signals for one company. Use this to verify your API key and mapping.
+
+   Example: `curl "http://localhost:3000/api/signals/companies-house/test?companyNumber=00000006"`
+
+2. **Seed watchlist**  
+   `POST /api/signals/companies-house/seed`  
+   Body: `{ "company_numbers": ["00000006", "01234567"] }`  
+   Inserts companies into `watchlist_companies` if not already present.
+
+3. **Run connector**  
+   `POST /api/signals/companies-house/run`  
+   Processes enabled watchlist companies (up to 200 per run), fetches CH data in batches of 5, maps to signals, and upserts into `signal_events`. Returns a summary (processed_count, upserted_count, errors). Logs each run to `signal_runs`.
+
+Signal events are upserted by `(source, source_id)` so reruns are idempotent. Rate limiting: conservative batching (5 companies at a time) and automatic backoff on 429 inside the CH client.
+
 ## Env reference
 
 See `.env.example` for all variable names. Required for minimal run: Supabase (URL + anon + service role), `NEXT_PUBLIC_APP_URL`, Stripe (secret, webhook secret, both price IDs).
