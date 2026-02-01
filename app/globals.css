@@ -34,35 +34,35 @@
 
 @layer base {
   :root {
-    --background: #0a1a15;
-    --foreground: #edf8f5;
-    --card: #0e251e;
-    --card-foreground: #edf8f5;
-    --popover: #0e251e;
-    --popover-foreground: #edf8f5;
-    --primary: #47b898;
+    --background: #1A1C1F;
+    --foreground: #F1F1F1;
+    --card: #1e2226;
+    --card-foreground: #F1F1F1;
+    --popover: #1e2226;
+    --popover-foreground: #F1F1F1;
+    --primary: #01B38C;
     --primary-foreground: #ffffff;
-    --secondary: #1d493d;
-    --secondary-foreground: #b6e2d6;
-    --muted: #1d493d;
-    --muted-foreground: #91d4c1;
-    --accent: #47b898;
+    --secondary: #22262a;
+    --secondary-foreground: #E5E5E5;
+    --muted: #2a2f34;
+    --muted-foreground: #B0B0B0;
+    --accent: #01CD9E;
     --accent-foreground: #ffffff;
     --destructive: #b91c1c;
     --destructive-foreground: #fff;
-    --border: #1d493d;
-    --input: #1d493d;
-    --ring: #47b898;
+    --border: #2a2f34;
+    --input: #2a2f34;
+    --ring: #01CD9E;
     --radius: 16px;
   }
 
   * {
-    border-color: #1d493d;
+    border-color: #2a2f34;
   }
 
   body {
-    background-color: #0a1a15;
-    color: #edf8f5;
+    background-color: #1A1C1F;
+    color: #F1F1F1;
     font-family: "Aspecta", "Inter", "Helvetica Neue", Arial, sans-serif;
     font-size: 16px;
     line-height: 24px;
@@ -120,53 +120,53 @@
 @layer components {
   .premium-card {
     @apply rounded-2xl shadow-lg border p-6;
-    background: linear-gradient(145deg, #0e251e, #1d493d);
-    border-color: #1d493d;
-    color: #edf8f5;
+    background: linear-gradient(145deg, #1e2226, #22262a);
+    border-color: #2a2f34;
+    color: #F1F1F1;
   }
 
   .premium-button {
     @apply rounded-xl px-6 py-3 text-label transition-all;
-    background-color: #47b898;
+    background-color: #01B38C;
     color: white;
-    box-shadow: 0 4px 14px rgba(71, 184, 152, 0.3);
+    box-shadow: 0 4px 14px rgba(1, 205, 158, 0.3);
   }
 
   .premium-button:hover {
-    background-color: #6cc6ac;
+    background-color: #01CD9E;
   }
 
   .premium-button-secondary {
     @apply rounded-xl px-6 py-3 text-label transition-all border;
-    background-color: #1d493d;
-    border-color: #2b6e5b;
-    color: #b6e2d6;
+    background-color: #22262a;
+    border-color: #2a2f34;
+    color: #E5E5E5;
   }
 
   .premium-button-secondary:hover {
-    background-color: #2b6e5b;
+    background-color: #2a2f34;
   }
 
   .icon-container {
     @apply rounded-xl flex items-center justify-center;
-    background-color: #2b6e5b;
-    color: #b6e2d6;
-    box-shadow: inset 0 0 20px rgba(71, 184, 152, 0.08);
+    background-color: #22262a;
+    color: #01CD9E;
+    box-shadow: inset 0 0 20px rgba(1, 205, 158, 0.08);
   }
 
   .icon-container-circle {
     @apply rounded-full flex items-center justify-center;
-    background-color: #2b6e5b;
-    color: #b6e2d6;
-    box-shadow: inset 0 0 20px rgba(71, 184, 152, 0.08);
+    background-color: #22262a;
+    color: #01CD9E;
+    box-shadow: inset 0 0 20px rgba(1, 205, 158, 0.08);
   }
 
   .progress-bar-gradient {
-    background: linear-gradient(90deg, #6cc6ac, #399379);
+    background: linear-gradient(90deg, #01CD9E, #019979);
   }
 
   .nav-item-active {
     @apply border-l-4 border-deep-teal-500 pl-4;
-    background-color: #1d493d;
+    background-color: #22262a;
   }
 }

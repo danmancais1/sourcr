@@ -1,4 +1,4 @@
-# Sourcr – UK Property Sourcing & Quiet-Sale Marketplace
+# Prop IX – UK Property Sourcing & Quiet-Sale Marketplace
 
 Production-ready MVP SaaS for investors (leads, distress scoring, compliant outreach) and landlords (Quiet Sale submission, matching, messaging).
 
@@ -79,7 +79,7 @@ This creates a workspace, 15 leads, 5 landlord submissions, 6 investor buy boxes
 1. Push the repo to GitHub and import the project in [Vercel](https://vercel.com).
 2. Add all env vars from `.env.example` in **Project Settings → Environment Variables**.
 3. Deploy. Set **Root Directory** to the repo root.
-4. In Supabase **Authentication → URL Configuration**, set **Site URL** and **Redirect URLs** to your Vercel URL (e.g. `https://sourcr.vercel.app`).
+4. In Supabase **Authentication → URL Configuration**, set **Site URL** and **Redirect URLs** to your Vercel URL (e.g. `https://propix.vercel.app`).
 5. In Stripe **Webhooks**, set the endpoint URL to `https://your-vercel-domain.vercel.app/api/webhooks/stripe`.
 
 ### Cron: Refresh PPD (Land Registry Price Paid Data)

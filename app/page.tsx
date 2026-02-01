@@ -1,15 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Shield,
-  Zap,
-  BarChart3,
-  LayoutDashboard,
-  Building2,
-  MessageSquare,
-  FileCheck,
-} from "lucide-react";
+import { PropIxLogo } from "@/components/PropIxLogo";
 import { LandingHero } from "@/components/landing/LandingHero";
 import { StatsBar } from "@/components/landing/StatsBar";
 import { TiltedCard } from "@/components/landing/TiltedCard";
@@ -18,25 +10,21 @@ import { FAQ } from "@/components/landing/FAQ";
 
 const benefits = [
   {
-    icon: Shield,
     title: "Compliance-first",
     description:
       "Suppression lists, opt-out handling, consent rules, and audit logs. Assisted sending only by default.",
   },
   {
-    icon: Zap,
     title: "Real data signals",
     description:
       "Companies House, EPC, Gazette, and Land Registry. Distress scoring and off-market leads, no placeholders.",
   },
   {
-    icon: BarChart3,
     title: "One pipeline",
     description:
       "Leads, scoring, pipeline, campaigns, and messaging in one place. Built for serious UK property investors.",
   },
   {
-    icon: LayoutDashboard,
     title: "Premium interface",
     description:
       "Clean dashboard, quiet-sale submissions for sellers, and secure messaging. Works on desktop and mobile.",
@@ -57,12 +45,12 @@ const stepsSeller = [
 
 const testimonials = [
   {
-    quote: "Sourcr transformed my deal pipeline. The distress signals are incredibly accurate and save me hours of manual research.",
+    quote: "Prop IX transformed my deal pipeline. The distress signals are incredibly accurate and save me hours of manual research.",
     author: "Tom H.",
     role: "Property Investor",
   },
   {
-    quote: "I sold my property without listing it publicly. The investors on Sourcr were professional and the process was smooth.",
+    quote: "I sold my property without listing it publicly. The investors on Prop IX were professional and the process was smooth.",
     author: "Sarah M.",
     role: "Landlord",
   },
@@ -95,17 +83,15 @@ export default function HomePage() {
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-deep-teal-800/80 bg-deep-teal-950/90 backdrop-blur-xl">
         <div className="container mx-auto flex h-16 items-center justify-between px-6">
-          <Link href="/" className="text-subsection font-bold text-deep-teal-50 tracking-tight">
-            Sourcr
-          </Link>
+          <PropIxLogo href="/" size="sm" />
           <nav className="flex items-center gap-2">
             <Link href="/pricing">
-              <Button variant="ghost" size="sm" className="text-deep-teal-200 hover:text-deep-teal-50">
+              <Button variant="ghost" size="sm" className="text-deep-teal-100 hover:text-deep-teal-50">
                 Pricing
               </Button>
             </Link>
             <Link href="/login">
-              <Button variant="ghost" size="sm" className="text-deep-teal-200 hover:text-deep-teal-50">
+              <Button variant="ghost" size="sm" className="text-deep-teal-100 hover:text-deep-teal-50">
                 Log in
               </Button>
             </Link>
@@ -122,10 +108,10 @@ export default function HomePage() {
       {/* Social proof / stats */}
       <StatsBar />
 
-      {/* Why Sourcr – tilted benefit cards */}
+      {/* Why Prop IX – tilted benefit cards */}
       <section className="container mx-auto px-6 py-24">
         <h2 className="text-section font-bold text-deep-teal-50 text-center mb-4">
-          Why choose Sourcr?
+          Why choose Prop IX?
         </h2>
         <p className="text-body-lg text-deep-teal-300 text-center max-w-2xl mx-auto mb-16">
           Built for seamless, compliant, and data-driven property sourcing and quiet sales.
@@ -133,13 +119,10 @@ export default function HomePage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {benefits.map((b, i) => (
             <TiltedCard key={b.title} className="h-full" tiltAmount={6} delay={i * 0.1}>
-              <Card className="h-full border-deep-teal-700/80 bg-deep-teal-900/70 shadow-xl shadow-black/20 hover:shadow-deep-teal-glow/30 transition-shadow">
+              <Card className="h-full border-deep-teal-700/80 bg-deep-teal-900/70 shadow-xl shadow-black/20 shadow-[0_0_40px_rgba(1,205,158,0.12)] hover:shadow-[0_0_50px_rgba(1,205,158,0.18)] transition-shadow">
                 <CardContent className="p-6">
-                  <div className="icon-container w-12 h-12 rounded-xl mb-4">
-                    <b.icon className="h-6 w-6 text-deep-teal-200" />
-                  </div>
                   <h3 className="text-subsection font-semibold text-deep-teal-50 mb-2">{b.title}</h3>
-                  <p className="text-body-sm text-deep-teal-300">{b.description}</p>
+                  <p className="text-body-sm text-deep-teal-200">{b.description}</p>
                 </CardContent>
               </Card>
             </TiltedCard>
@@ -148,7 +131,7 @@ export default function HomePage() {
       </section>
 
       {/* Product showcase – one platform + mockup */}
-      <section className="border-y border-deep-teal-800/80 bg-deep-teal-900/30 py-24">
+      <section className="border-y border-deep-teal-800/80 bg-deep-teal-900/30 py-24 shadow-[inset_0_0_80px_rgba(1,205,158,0.06)]">
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
@@ -187,42 +170,36 @@ export default function HomePage() {
           A simple, fast, and compliant platform for investors and sellers—in a few steps.
         </p>
         <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          <Card className="border-deep-teal-700/80 bg-deep-teal-900/60">
+          <Card className="border-deep-teal-700/80 bg-deep-teal-900/60 shadow-[0_0_40px_rgba(1,205,158,0.08)]">
             <CardContent className="p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <Building2 className="h-8 w-8 text-deep-teal-400" />
-                <h3 className="text-subsection font-semibold text-deep-teal-50">For investors</h3>
-              </div>
+              <h3 className="text-subsection font-semibold text-deep-teal-50 mb-6">For investors</h3>
               <ul className="space-y-6">
                 {stepsInvestor.map((s) => (
                   <li key={s.num} className="flex gap-4">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-deep-teal-700 text-label font-bold text-deep-teal-300">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-deep-teal-700 text-label font-bold text-deep-teal-50">
                       {s.num}
                     </span>
                     <div>
-                      <h4 className="text-label font-semibold text-deep-teal-200">{s.title}</h4>
-                      <p className="text-body-sm text-deep-teal-400 mt-0.5">{s.body}</p>
+                      <h4 className="text-label font-semibold text-deep-teal-50">{s.title}</h4>
+                      <p className="text-body-sm text-deep-teal-100 mt-0.5">{s.body}</p>
                     </div>
                   </li>
                 ))}
               </ul>
             </CardContent>
           </Card>
-          <Card className="border-deep-teal-700/80 bg-deep-teal-900/60">
+          <Card className="border-deep-teal-700/80 bg-deep-teal-900/60 shadow-[0_0_40px_rgba(1,205,158,0.08)]">
             <CardContent className="p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <MessageSquare className="h-8 w-8 text-deep-teal-400" />
-                <h3 className="text-subsection font-semibold text-deep-teal-50">For sellers</h3>
-              </div>
+              <h3 className="text-subsection font-semibold text-deep-teal-50 mb-6">For sellers</h3>
               <ul className="space-y-6">
                 {stepsSeller.map((s) => (
                   <li key={s.num} className="flex gap-4">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-deep-teal-700 text-label font-bold text-deep-teal-300">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-deep-teal-700 text-label font-bold text-deep-teal-50">
                       {s.num}
                     </span>
                     <div>
-                      <h4 className="text-label font-semibold text-deep-teal-200">{s.title}</h4>
-                      <p className="text-body-sm text-deep-teal-400 mt-0.5">{s.body}</p>
+                      <h4 className="text-label font-semibold text-deep-teal-50">{s.title}</h4>
+                      <p className="text-body-sm text-deep-teal-100 mt-0.5">{s.body}</p>
                     </div>
                   </li>
                 ))}
@@ -239,13 +216,12 @@ export default function HomePage() {
             Trusted by investors and sellers
           </h2>
           <p className="text-body text-deep-teal-300 text-center max-w-2xl mx-auto mb-14">
-            Join a growing community who use Sourcr for compliant sourcing and discreet sales.
+            Join a growing community who use Prop IX for compliant sourcing and discreet sales.
           </p>
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {testimonials.map((t, i) => (
               <Card key={i} className="border-deep-teal-700/80 bg-deep-teal-950/60">
                 <CardContent className="p-6">
-                  <FileCheck className="h-8 w-8 text-deep-teal-500/60 mb-4" />
                   <p className="text-body-sm text-deep-teal-200 mb-4">&ldquo;{t.quote}&rdquo;</p>
                   <p className="text-label font-semibold text-deep-teal-400">
                     — {t.author}, {t.role}
@@ -261,13 +237,13 @@ export default function HomePage() {
       <FAQ />
 
       {/* Final CTA */}
-      <section className="border-t border-deep-teal-800/80 bg-deep-teal-950/80 py-24">
+      <section className="border-t border-deep-teal-800/80 bg-deep-teal-950/80 py-24 shadow-[inset_0_0_100px_rgba(1,205,158,0.06)]">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-section font-bold text-deep-teal-50 mb-4">
             Ready to take control of your property pipeline?
           </h2>
           <p className="text-body-lg text-deep-teal-300 mb-10 max-w-2xl mx-auto">
-            Join investors and sellers who use Sourcr for secure, compliant, and data-driven deals.
+            Join investors and sellers who use Prop IX for secure, compliant, and data-driven deals.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link href="/signup">
@@ -289,7 +265,7 @@ export default function HomePage() {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <p className="text-body-sm text-deep-teal-400">
-              © 2026 Sourcr. All rights reserved.
+              © 2026 Prop IX. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
               <Link href="/terms" className="text-body-sm text-deep-teal-400 hover:text-deep-teal-50">

@@ -29,3 +29,6 @@ npm-debug.log*
 
 # Supabase
 .supabase/
+
+# Logo source (cropped output is public/logo.png)
+public/logo-source.png

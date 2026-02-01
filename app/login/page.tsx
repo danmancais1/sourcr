@@ -47,7 +47,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Log in</CardTitle>
-          <CardDescription>Sign in to your Sourcr account.</CardDescription>
+          <CardDescription>Sign in to your Prop IX account.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">

@@ -38,7 +38,7 @@ export function AppMockup({
             </div>
             <div className="flex-1 flex justify-center">
               <div className="rounded-lg bg-deep-teal-800/80 px-4 py-1.5 text-body-sm text-deep-teal-400 w-3/4 max-w-xs text-center">
-                app.sourcr.co/dashboard
+                app.propix.co/dashboard
               </div>
             </div>
           </div>

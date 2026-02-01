@@ -20,9 +20,6 @@ export function StatsBar() {
       transition={{ duration: 0.6 }}
     >
       <div className="container mx-auto px-6">
-        <p className="text-center text-body-sm font-medium text-deep-teal-400 mb-8">
-          They trust us
-        </p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {stats.map((stat, i) => (
             <motion.div

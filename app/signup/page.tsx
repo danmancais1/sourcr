@@ -64,7 +64,7 @@ function SignupForm() {
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Create account</CardTitle>
-          <CardDescription>Sign up for Sourcr. You can choose a plan on the next step.</CardDescription>
+          <CardDescription>Sign up for Prop IX. You can choose a plan on the next step.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">

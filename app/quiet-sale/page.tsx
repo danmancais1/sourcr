@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { submitQuietSale } from "./actions";
+import { PropIxLogo } from "@/components/PropIxLogo";
 
 export default function QuietSalePage() {
   const [submitted, setSubmitted] = useState(false);
@@ -33,9 +34,7 @@ export default function QuietSalePage() {
       <div className="min-h-screen bg-deep-teal-950">
         <header className="border-b border-deep-teal-800">
           <div className="container mx-auto flex h-16 items-center justify-between px-4">
-            <Link href="/" className="text-xl font-bold text-deep-teal-50">
-              Sourcr
-            </Link>
+            <PropIxLogo href="/" size="sm" />
           </div>
         </header>
 
@@ -65,9 +64,7 @@ export default function QuietSalePage() {
     <div className="min-h-screen bg-deep-teal-950">
       <header className="border-b border-deep-teal-800">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <Link href="/" className="text-xl font-bold text-deep-teal-50">
-            Sourcr
-          </Link>
+          <PropIxLogo href="/" size="sm" />
           <Link href="/">Back</Link>
         </div>
       </header>

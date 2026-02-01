@@ -7,11 +7,11 @@ import { cn } from "@/lib/utils";
 
 const items = [
   {
-    q: "What is Sourcr?",
-    a: "Sourcr is a UK platform connecting motivated property sellers with serious investors. Investors get data-driven distress signals, off-market leads, and compliant outreach tools. Sellers can list quietly without public listings or estate agent fees.",
+    q: "What is Prop IX?",
+    a: "Prop IX is a UK platform connecting motivated property sellers with serious investors. Investors get data-driven distress signals, off-market leads, and compliant outreach tools. Sellers can list quietly without public listings or estate agent fees.",
   },
   {
-    q: "Is Sourcr compliant with data protection?",
+    q: "Is Prop IX compliant with data protection?",
     a: "Yes. We're built compliance-first: suppression lists, opt-out handling, consent rules, audit logs, and daily sending limits. Outreach is assisted sending only by default, with full GDPR-aware practices.",
   },
   {
@@ -47,7 +47,7 @@ export function FAQ() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
       >
-        Everything you need to know about Sourcr, from compliance to pricing.
+        Everything you need to know about Prop IX, from compliance to pricing.
       </motion.p>
       <div className="max-w-3xl mx-auto space-y-2">
         {items.map((item, i) => (

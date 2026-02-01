@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { PropIxLogo } from "@/components/PropIxLogo";
 
 const plans = [
   {
@@ -30,9 +31,7 @@ export default function PricingPage() {
     <div className="min-h-screen bg-deep-teal-950">
       <header className="border-b border-deep-teal-800 bg-deep-teal-900/80 backdrop-blur">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <Link href="/" className="text-subsection font-bold text-deep-teal-50">
-            Sourcr
-          </Link>
+          <PropIxLogo href="/" size="sm" />
           <nav className="flex items-center gap-4">
             <Link href="/pricing" className="text-label font-medium">
               Pricing

@@ -1,14 +1,13 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { PropIxLogo } from "@/components/PropIxLogo";
 
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-deep-teal-950">
       <header className="border-b border-deep-teal-800">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <Link href="/" className="text-xl font-bold text-deep-teal-50">
-            Sourcr
-          </Link>
+          <PropIxLogo href="/" size="sm" />
           <Link href="/">
             <Button variant="ghost">Back</Button>
           </Link>
@@ -19,7 +18,7 @@ export default function TermsPage() {
         <p className="mt-2 text-sm text-deep-teal-200">Last updated: January 2025</p>
         <div className="prose prose-invert mt-8 dark:prose-invert">
           <p>
-            These Terms of Service (&quot;Terms&quot;) govern your use of Sourcr (&quot;we&quot;, &quot;us&quot;, &quot;the platform&quot;). By using Sourcr you agree to these Terms.
+            These Terms of Service (&quot;Terms&quot;) govern your use of Prop IX (&quot;we&quot;, &quot;us&quot;, &quot;the platform&quot;). By using Prop IX you agree to these Terms.
           </p>
           <h2 className="mt-6 text-subsection font-semibold">1. Use of the platform</h2>
           <p>

@@ -24,7 +24,7 @@ export function LandingHero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
           >
-            Sourcr connects motivated UK sellers with serious investors. Off-market leads, distress signals, compliant outreach, and quiet sales—all in one platform.
+            Prop IX connects motivated UK sellers with serious investors. Off-market leads, distress signals, compliant outreach, and quiet sales. All in one platform.
           </motion.p>
           <motion.div
             className="flex flex-wrap items-center justify-center lg:justify-start gap-4"
@@ -56,11 +56,12 @@ export function LandingHero() {
         >
           <div className="relative w-full max-w-lg">
             <AppMockup variant="browser" placeholderLabel="Dashboard preview" />
-            {/* Subtle glow behind mockup */}
+            {/* Green glow behind mockup */}
             <div
-              className="absolute -inset-4 -z-10 rounded-3xl opacity-40"
+              className="absolute -inset-8 -z-10 rounded-3xl opacity-60"
               style={{
-                background: "radial-gradient(ellipse at center, rgba(71, 184, 152, 0.15) 0%, transparent 70%)",
+                background: "radial-gradient(ellipse 80% 60% at center, rgba(1, 205, 158, 0.2) 0%, transparent 65%)",
+                boxShadow: "0 0 80px rgba(1, 205, 158, 0.15)",
               }}
             />
           </div>

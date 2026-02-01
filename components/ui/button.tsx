@@ -8,12 +8,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-deep-teal-500 text-white hover:bg-deep-teal-400 shadow-[0_4px_14px_rgba(71,184,152,0.3)]",
+        default: "bg-deep-teal-500 text-white hover:bg-deep-teal-400 shadow-[0_4px_14px_rgba(1,205,158,0.3)]",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-deep-teal-700 bg-deep-teal-800 hover:bg-deep-teal-700 text-deep-teal-200",
-        secondary: "bg-deep-teal-800 text-deep-teal-200 hover:bg-deep-teal-700 border border-deep-teal-700",
-        ghost: "hover:bg-deep-teal-800 hover:text-deep-teal-50 text-deep-teal-200",
-        link: "text-deep-teal-400 underline-offset-4 hover:underline hover:text-deep-teal-300",
+        outline: "border border-deep-teal-700 bg-deep-teal-800 hover:bg-deep-teal-700 text-deep-teal-50",
+        secondary: "bg-deep-teal-800 text-deep-teal-50 hover:bg-deep-teal-700 border border-deep-teal-700",
+        ghost: "hover:bg-deep-teal-800 hover:text-deep-teal-50 text-deep-teal-100",
+        link: "text-deep-teal-400 underline-offset-4 hover:underline hover:text-deep-teal-50",
       },
       size: {
         default: "h-10 px-4 py-2",

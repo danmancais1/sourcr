@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { RoleSelectionModal } from "@/components/role-selection-modal";
 import { SellerNav } from "./seller-nav";
+import { PropIxLogo } from "@/components/PropIxLogo";
 
 export const dynamic = "force-dynamic";
 
@@ -33,9 +34,7 @@ export default async function SellerLayout({
     <div className="min-h-screen bg-deep-teal-950 flex">
       <aside className="w-64 flex-shrink-0 border-r border-deep-teal-800 bg-deep-teal-950">
         <div className="sticky top-0 flex h-screen flex-col p-4">
-          <Link href="/seller/dashboard" className="mb-6 text-subsection font-bold text-deep-teal-50">
-            Sourcr
-          </Link>
+          <PropIxLogo href="/seller/dashboard" size="sm" />
           <SellerNav />
           <div className="mt-auto pt-4 border-t border-deep-teal-800">
             <form action="/api/auth/signout" method="post">

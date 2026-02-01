@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Sourcr – UK Property Sourcing & Quiet Sale Marketplace",
+  title: "Prop IX – UK Property Sourcing & Quiet Sale Marketplace",
   description:
     "Source leads, score distress, run compliant outreach. Connect with landlords for quiet sales.",
 };
