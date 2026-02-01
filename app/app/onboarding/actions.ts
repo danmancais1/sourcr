@@ -3,6 +3,35 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getStripe } from "@/lib/stripe";
 
+export type OnboardingState = {
+  hasUser: boolean;
+  hasWorkspace: boolean;
+  plan: "starter" | "pro";
+};
+
+export async function getOnboardingState(planFromUrl: "starter" | "pro"): Promise<OnboardingState> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return { hasUser: false, hasWorkspace: false, plan: planFromUrl };
+  }
+
+  const { data: existing } = await supabase
+    .from("workspace_members")
+    .select("workspace_id")
+    .eq("user_id", user.id)
+    .limit(1)
+    .single();
+
+  return {
+    hasUser: true,
+    hasWorkspace: Boolean(existing?.workspace_id),
+    plan: planFromUrl,
+  };
+}
+
 export async function createWorkspaceAndCheckout(formData: FormData) {
   const stripe = getStripe();
   const supabase = await createClient();
