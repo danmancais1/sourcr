@@ -8,11 +8,28 @@ import { AppSidebar } from "@/components/AppSidebar";
 
 export const dynamic = "force-dynamic";
 
+function ConfigError() {
+  return (
+    <div className="min-h-screen bg-deep-teal-950 flex items-center justify-center p-4">
+      <div className="rounded-xl border border-deep-teal-700 bg-deep-teal-900/80 p-6 max-w-md text-center">
+        <h1 className="text-display text-deep-teal-50">Configuration needed</h1>
+        <p className="mt-2 text-body text-deep-teal-200">
+          Supabase environment variables are not set. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in your deployment (e.g. Vercel project settings).
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default async function AppLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return <ConfigError />;
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -33,7 +50,13 @@ export default async function AppLayout({
   }
 
   // Investors must complete onboarding (workspace + Stripe) before accessing the app
-  const pathname = (await headers()).get("x-pathname") ?? "";
+  let pathname = "";
+  try {
+    const h = await headers();
+    pathname = h.get("x-pathname") ?? "";
+  } catch {
+    pathname = "/app/onboarding";
+  }
   if (pathname !== "/app/onboarding") {
     const { data: membership } = await supabase
       .from("workspace_members")
