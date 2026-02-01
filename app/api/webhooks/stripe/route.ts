@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 
 async function getSupabaseAdmin() {
   const { createClient } = await import("@supabase/supabase-js");
@@ -12,11 +12,14 @@ async function getSupabaseAdmin() {
 }
 
 export async function POST(request: Request) {
+  const stripe = getStripe();
   const body = await request.text();
   const sig = request.headers.get("stripe-signature");
+
   if (!sig || !process.env.STRIPE_WEBHOOK_SECRET) {
     return NextResponse.json({ error: "Missing signature or secret" }, { status: 400 });
   }
+
   let event: Stripe.Event;
   try {
     event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET);
@@ -34,11 +37,13 @@ export async function POST(request: Request) {
       const workspaceId = session.client_reference_id ?? session.subscription as string;
       let subId = session.subscription as string;
       if (typeof subId !== "string" && subId) subId = (subId as Stripe.Subscription).id;
+
       if (session.customer_email && workspaceId) {
         const customerId = session.customer as string;
         const sub = subId ? await stripe.subscriptions.retrieve(subId) : null;
         const priceId = sub?.items?.data?.[0]?.price?.id ?? null;
         const plan = priceId?.includes("pro") ? "pro" : "starter";
+
         await supabase
           .from("workspaces")
           .update({
@@ -57,6 +62,7 @@ export async function POST(request: Request) {
       const sub = event.data.object as Stripe.Subscription;
       const workspaceId = sub.metadata?.workspace_id;
       if (!workspaceId) break;
+
       if (event.type === "customer.subscription.deleted") {
         await supabase
           .from("workspaces")
@@ -70,6 +76,7 @@ export async function POST(request: Request) {
       } else {
         const priceId = sub.items?.data?.[0]?.price?.id ?? null;
         const plan = priceId?.includes("pro") ? "pro" : "starter";
+
         await supabase
           .from("workspaces")
           .update({

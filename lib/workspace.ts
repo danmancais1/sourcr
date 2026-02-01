@@ -11,8 +11,9 @@ export async function getCurrentWorkspace(supabase: SupabaseClient) {
     .eq("user_id", user.id)
     .limit(1)
     .single();
-  const ws = (row as { workspaces: Record<string, unknown> } | null)?.workspaces;
-  return ws ? (ws as { id: string; name: string; slug: string; plan: string }) : null;
+  const workspaces = (row as any)?.workspaces;
+  const ws = Array.isArray(workspaces) ? workspaces?.[0] : workspaces;
+  return ws ?? null;
 }
 
 export async function getCurrentWorkspaceId(supabase: SupabaseClient): Promise<string | null> {

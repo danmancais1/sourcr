@@ -51,7 +51,7 @@ export function MessagingThread({
         {messages.map((m) => (
           <div
             key={m.id}
-            className={`rounded-lg p-2 text-sm ${m.sender_type === "investor" ? "ml-8 bg-primary text-primary-foreground" : "mr-8 bg-muted"}`}
+            className={`rounded-lg p-2 text-body-sm ${m.sender_type === "investor" ? "ml-8 bg-primary text-primary-foreground" : "mr-8 bg-deep-teal-800"}`}
           >
             <span className="text-xs opacity-80">{m.sender_type}</span>
             <p>{m.body}</p>

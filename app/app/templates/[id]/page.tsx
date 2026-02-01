@@ -32,12 +32,12 @@ export default async function TemplateDetailPage({
       <Card>
         <CardHeader>
           <CardTitle>{template.name}</CardTitle>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-deep-teal-200">
             Channel: {template.channel}{template.subject ? ` · Subject: ${template.subject}` : ""}
           </p>
         </CardHeader>
         <CardContent>
-          <pre className="whitespace-pre-wrap rounded bg-muted p-4 text-sm">{template.body}</pre>
+          <pre className="whitespace-pre-wrap rounded bg-deep-teal-800 p-4 text-body-sm">{template.body}</pre>
         </CardContent>
       </Card>
     </div>

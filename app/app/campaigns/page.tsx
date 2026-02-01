@@ -18,7 +18,7 @@ export default async function CampaignsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Campaigns</h1>
+        <h1 className="text-display">Campaigns</h1>
         <Link href="/app/campaigns/new">
           <Button>New campaign</Button>
         </Link>
@@ -29,17 +29,17 @@ export default async function CampaignsPage() {
         </CardHeader>
         <CardContent>
           <ul className="divide-y divide-border">
-            {(campaigns ?? []).map((c: { id: string; name: string; status: string; created_at: string }) => (
+            {(campaigns ?? []).map((c: any) => (
               <li key={c.id} className="py-3">
                 <Link href={`/app/campaigns/${c.id}`} className="flex items-center justify-between hover:underline">
-                  <span className="font-medium">{c.name}</span>
-                  <span className="text-sm text-muted-foreground">{c.status}</span>
+                  <span className="text-label font-medium">{c.name}</span>
+                  <span className="text-body-sm text-deep-teal-200">{c.status}</span>
                 </Link>
               </li>
             ))}
           </ul>
           {(!campaigns || campaigns.length === 0) && (
-            <p className="py-8 text-center text-muted-foreground">No campaigns yet.</p>
+            <p className="py-8 text-center text-body-sm text-deep-teal-200">No campaigns yet.</p>
           )}
         </CardContent>
       </Card>

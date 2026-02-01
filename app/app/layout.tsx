@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
+import { RoleSelectionModal } from "@/components/role-selection-modal";
+import { AppNav } from "./app-nav";
 
 export default async function AppLayout({
   children,
@@ -16,53 +18,35 @@ export default async function AppLayout({
     redirect("/login");
   }
 
-  const { data: memberships } = await supabase
-    .from("workspace_members")
-    .select("workspace_id, workspaces(id, name, slug)")
-    .eq("user_id", user.id);
-  const workspaces = (memberships ?? []).map((m) => (m as { workspaces: { id: string; name: string; slug: string } }).workspaces).filter(Boolean);
+  const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
+  const role = (profile as any)?.role;
+
+  if (!role) {
+    return <RoleSelectionModal />;
+  }
+
+  if (role === "seller") {
+    redirect("/seller/dashboard");
+  }
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-10 border-b border-border bg-background">
-        <div className="container mx-auto flex h-14 items-center justify-between px-4">
-          <Link href="/app/dashboard" className="text-lg font-bold text-primary">
+    <div className="min-h-screen bg-deep-teal-950 flex">
+      <aside className="w-64 flex-shrink-0 border-r border-deep-teal-800 bg-deep-teal-950">
+        <div className="sticky top-0 flex h-screen flex-col p-4">
+          <Link href="/app/dashboard" className="mb-6 text-subsection font-bold text-deep-teal-50">
             Sourcr
           </Link>
-          <nav className="flex items-center gap-2">
-            <Link href="/app/dashboard">
-              <Button variant="ghost" size="sm">Dashboard</Button>
-            </Link>
-            <Link href="/app/leads">
-              <Button variant="ghost" size="sm">Leads</Button>
-            </Link>
-            <Link href="/app/pipeline">
-              <Button variant="ghost" size="sm">Pipeline</Button>
-            </Link>
-            <Link href="/app/campaigns">
-              <Button variant="ghost" size="sm">Campaigns</Button>
-            </Link>
-            <Link href="/app/templates">
-              <Button variant="ghost" size="sm">Templates</Button>
-            </Link>
-            <Link href="/app/direct-sellers">
-              <Button variant="ghost" size="sm">Direct Sellers</Button>
-            </Link>
-            <Link href="/app/messaging">
-              <Button variant="ghost" size="sm">Messaging</Button>
-            </Link>
-            <Link href="/app/settings">
-              <Button variant="ghost" size="sm">Settings</Button>
-            </Link>
+          <AppNav />
+          <div className="mt-auto pt-4 border-t border-deep-teal-800">
             <form action="/api/auth/signout" method="post">
-              <Button type="submit" variant="ghost" size="sm">
+              <Button type="submit" variant="ghost" size="sm" className="w-full justify-start text-deep-teal-200 hover:text-deep-teal-50">
                 Sign out
               </Button>
             </form>
-          </nav>
+          </div>
         </div>
-      </header>
-      <main className="container mx-auto px-4 py-6">{children}</main>
+      </aside>
+      <main className="flex-1 overflow-auto p-6">{children}</main>
     </div>
   );
 }

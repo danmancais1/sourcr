@@ -31,7 +31,7 @@ export function SettingsForm({
         <Label htmlFor="name">Workspace name</Label>
         <Input id="name" name="name" defaultValue={name} required />
       </div>
-      <p className="text-sm text-muted-foreground">Slug: {slug}</p>
+      <p className="text-body-sm text-deep-teal-200">Slug: {slug}</p>
       <SubmitButton />
     </form>
   );

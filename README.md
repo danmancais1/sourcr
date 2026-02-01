@@ -26,7 +26,8 @@ Production-ready MVP SaaS for investors (leads, distress scoring, compliant outr
    - **anon public** key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - **service_role** key → `SUPABASE_SERVICE_ROLE_KEY` (keep secret)
 3. In **SQL Editor**, run the contents of `supabase/migrations/20250101000000_initial_schema.sql` (creates all tables and RLS).
-4. In **Authentication → Providers**, enable Email (and optionally others). Set **Site URL** and **Redirect URLs** to your app URL (e.g. `http://localhost:3000`, `https://your-app.vercel.app`).
+4. In **Authentication → Providers**, enable Email (and optionally others). Set **Site URL** and **Redirect URLs** to your app URL (e.g. `http://localhost:3000`, `https://your-app.vercel.app`). Add both local and production URLs if you use both.
+5. **Authentication → Providers → Email**: If "Confirm email" is **enabled**, new users must click the confirmation link before they can log in (they’ll see "Check your email to confirm"). For instant signup without email confirmation, **disable** "Confirm email".
 
 ---
 
@@ -111,6 +112,18 @@ Alternatively, use **Settings → Land Registry PPD → Refresh PPD (manual)** i
 
 - **Letters**: PDF from templates (assisted send).
 - **Email / SMS**: Resend and Twilio; assisted sending only by default; suppression list, opt-out, audit log, daily limits (Starter 25, Pro 200); block unless `consent_status = consented` or B2B basis confirmed on campaign.
+
+## Ship checklist (before going live)
+
+- **Supabase → Authentication → URL Configuration**
+  - **Site URL**: Your production URL (e.g. `https://your-app.vercel.app`).
+  - **Redirect URLs**: Add `https://your-app.vercel.app/**`, and `http://localhost:3000/**` if you still use local dev. Without these, sign-in and magic links will fail.
+- **Supabase → Authentication → Providers → Email**
+  - **Confirm email**: On = users must click the confirmation link before logging in. Off = instant sign-in (useful for MVP testing).
+- **Vercel → Project → Environment Variables**
+  - Set every variable from `.env.example` for Production (and Preview if you use preview deploys). Missing `NEXT_PUBLIC_SUPABASE_*` causes "Missing Supabase env vars" and blank/error pages.
+- **Stripe**
+  - Webhook endpoint URL must match production (e.g. `https://your-app.vercel.app/api/webhooks/stripe`). Use the correct **Signing secret** for that endpoint.
 
 ## Errors
 

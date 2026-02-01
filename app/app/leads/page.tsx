@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getCurrentWorkspace } from "@/lib/workspace";
 
@@ -28,27 +28,22 @@ export default async function LeadsPage({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Leads</h1>
+        <h1 className="text-display">Leads</h1>
         <Link href="/app/leads/import">
           <Button>Import CSV</Button>
         </Link>
       </div>
       <form method="get" className="flex flex-wrap gap-4 items-center">
-        <Input
-          placeholder="Search..."
-          defaultValue={params.q}
-          name="q"
-          className="max-w-sm"
-        />
+        <Input placeholder="Search..." defaultValue={params.q} name="q" className="max-w-sm" />
         <select name="stage" defaultValue={params.stage ?? ""} className="rounded-md border border-input bg-background px-3 py-2 text-sm">
-            <option value="">All stages</option>
-            <option value="new">New</option>
-            <option value="contacted">Contacted</option>
-            <option value="viewing">Viewing</option>
-            <option value="offer">Offer</option>
-            <option value="won">Won</option>
-            <option value="lost">Lost</option>
-          </select>
+          <option value="">All stages</option>
+          <option value="new">New</option>
+          <option value="contacted">Contacted</option>
+          <option value="viewing">Viewing</option>
+          <option value="offer">Offer</option>
+          <option value="won">Won</option>
+          <option value="lost">Lost</option>
+        </select>
         <Button type="submit" variant="secondary">Filter</Button>
       </form>
       <Card>
@@ -57,27 +52,29 @@ export default async function LeadsPage({
         </CardHeader>
         <CardContent>
           <ul className="divide-y divide-border">
-            {(leads ?? []).map((lead: { id: string; title: string | null; pipeline_stage: string; score: number | null; created_at: string; properties: { address_line_1: string; postcode: string } | null; owners: { name: string; email: string | null } | null }) => (
-              <li key={lead.id} className="py-3">
-                <Link href={`/app/leads/${lead.id}`} className="flex items-center justify-between hover:underline">
-                  <div>
-                    <span className="font-medium">{lead.title || (lead.properties as { address_line_1?: string })?.address_line_1 || "Untitled"}</span>
-                    {lead.owners && (
-                      <span className="ml-2 text-sm text-muted-foreground">
-                        {(lead.owners as { name: string }).name}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <span>{lead.pipeline_stage}</span>
-                    {lead.score != null && <span>Score: {lead.score}</span>}
-                  </div>
-                </Link>
-              </li>
-            ))}
+            {(leads ?? []).map((x: any) => {
+              const property = x.properties?.[0];
+              const owner = x.owners?.[0];
+              return (
+                <li key={x.id} className="py-3">
+                  <Link href={`/app/leads/${x.id}`} className="flex items-center justify-between hover:underline">
+                    <div>
+                      <span className="text-label font-medium">{x.title || property?.address_line_1 || "Untitled"}</span>
+                      {owner && (
+                        <span className="ml-2 text-body-sm text-deep-teal-200">{owner.name}</span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 text-body-sm text-deep-teal-200">
+                      <span>{x.pipeline_stage}</span>
+                      {x.score != null && <span>Score: {x.score}</span>}
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
           {(!leads || leads.length === 0) && (
-            <p className="py-8 text-center text-muted-foreground">No leads yet. Import a CSV or add manually.</p>
+            <p className="py-8 text-center text-body-sm text-deep-teal-200">No leads yet. Import a CSV or add manually.</p>
           )}
         </CardContent>
       </Card>

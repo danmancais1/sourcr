@@ -18,7 +18,7 @@ export default async function TemplatesPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Templates</h1>
+        <h1 className="text-display">Templates</h1>
         <Link href="/app/templates/new">
           <Button>New template</Button>
         </Link>
@@ -29,17 +29,17 @@ export default async function TemplatesPage() {
         </CardHeader>
         <CardContent>
           <ul className="divide-y divide-border">
-            {(templates ?? []).map((t: { id: string; name: string; channel: string; subject: string | null }) => (
+            {(templates ?? []).map((t: any) => (
               <li key={t.id} className="py-3">
                 <Link href={`/app/templates/${t.id}`} className="flex items-center justify-between hover:underline">
-                  <span className="font-medium">{t.name}</span>
-                  <span className="text-sm text-muted-foreground">{t.channel}{t.subject ? ` · ${t.subject}` : ""}</span>
+                  <span className="text-label font-medium">{t.name}</span>
+                  <span className="text-body-sm text-deep-teal-200">{t.channel}{t.subject ? ` · ${t.subject}` : ""}</span>
                 </Link>
               </li>
             ))}
           </ul>
           {(!templates || templates.length === 0) && (
-            <p className="py-8 text-center text-muted-foreground">No templates yet.</p>
+            <p className="py-8 text-center text-body-sm text-deep-teal-200">No templates yet.</p>
           )}
         </CardContent>
       </Card>

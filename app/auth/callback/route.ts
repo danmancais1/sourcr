@@ -6,13 +6,18 @@ export async function GET(request: Request) {
   const code = searchParams.get("code");
   const next = searchParams.get("next") ?? "/app/dashboard";
 
-  if (code) {
-    const supabase = await createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (error) {
-      console.error("Auth callback error:", error.message);
-      return NextResponse.redirect(`${origin}/login?error=auth_callback_error`);
+  try {
+    if (code) {
+      const supabase = await createClient();
+      const { error } = await supabase.auth.exchangeCodeForSession(code);
+      if (error) {
+        console.error("Auth callback error:", error.message);
+        return NextResponse.redirect(`${origin}/login?error=auth_callback_error`);
+      }
     }
+  } catch (err) {
+    console.error("Auth callback:", err instanceof Error ? err.message : err);
+    return NextResponse.redirect(`${origin}/login?error=auth_callback_error`);
   }
 
   return NextResponse.redirect(`${origin}${next}`);

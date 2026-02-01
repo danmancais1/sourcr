@@ -45,7 +45,7 @@ export function ApiKeysForm({ workspaceId }: { workspaceId: string }) {
             </Button>
           </form>
           {result[id] && (
-            <p className={`text-sm ${result[id].ok ? "text-green-600" : "text-destructive"}`}>
+            <p className={`text-body-sm ${result[id].ok ? "text-green-600" : "text-destructive"}`}>
               {result[id].message}
             </p>
           )}

@@ -32,22 +32,25 @@ export default async function CampaignDetailPage({
       <Card>
         <CardHeader>
           <CardTitle>{campaign.name}</CardTitle>
-          <p className="text-sm text-muted-foreground">
-            Status: {campaign.status} · Template: {(campaign.templates as { name: string } | null)?.name ?? "—"}
+          <p className="text-body-sm text-deep-teal-200">
+            Status: {campaign.status} · Template: {(campaign as any).templates?.[0]?.name ?? "—"}
           </p>
         </CardHeader>
         <CardContent>
-          <h3 className="font-medium mb-2">Steps (assisted send)</h3>
+          <h3 className="text-subsection font-medium mb-2">Steps (assisted send)</h3>
           <ul className="divide-y divide-border">
-            {(campaign.campaign_steps ?? []).map((s: { id: string; status: string; owners: { name: string; email: string | null } | null }) => (
+            {((campaign as any).campaign_steps ?? []).map((s: any) => {
+              const owner = s.owners?.[0];
+              return (
               <li key={s.id} className="py-2 flex justify-between">
-                <span>{(s.owners as { name: string } | null)?.name ?? "—"}</span>
-                <span className="text-sm text-muted-foreground">{s.status}</span>
+                <span>{owner?.name ?? "—"}</span>
+                <span className="text-body-sm text-deep-teal-200">{s.status}</span>
               </li>
-            ))}
+              );
+            })}
           </ul>
-          {(!campaign.campaign_steps || campaign.campaign_steps.length === 0) && (
-            <p className="text-sm text-muted-foreground">No steps yet. Add leads/owners to send.</p>
+          {(!(campaign as any).campaign_steps || (campaign as any).campaign_steps.length === 0) && (
+            <p className="text-body-sm text-deep-teal-200">No steps yet. Add leads/owners to send.</p>
           )}
         </CardContent>
       </Card>

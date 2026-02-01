@@ -13,7 +13,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold">Settings</h1>
+      <h1 className="text-display text-deep-teal-50">Settings</h1>
 
       <Card>
         <CardHeader>
@@ -57,12 +57,12 @@ export default async function SettingsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground mb-2">Plan: {ws.plan}</p>
+          <p className="text-body-sm text-deep-teal-200 mb-2">Plan: {ws.plan}</p>
           <form action={createBillingPortalSession}>
             <input type="hidden" name="workspaceId" value={ws.id} />
             <button
               type="submit"
-              className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground h-10 px-4 py-2 hover:bg-primary/90"
+              className="inline-flex items-center justify-center rounded-xl text-label font-medium bg-deep-teal-500 text-white h-10 px-4 py-2 hover:bg-deep-teal-400 shadow-[0_4px_14px_rgba(71,184,152,0.3)]"
             >
               Open customer portal
             </button>

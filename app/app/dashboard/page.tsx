@@ -24,8 +24,10 @@ export default async function DashboardPage({
     .from("workspace_members")
     .select("workspace_id, workspaces(id, name, plan)")
     .eq("user_id", user.id);
-  const workspace = (memberships ?? [])[0] as { workspaces: { id: string; name: string; plan: string } } | undefined;
-  const ws = workspace?.workspaces;
+  const first = (memberships ?? [])[0] as any;
+  const workspaces = first?.workspaces;
+  const ws = Array.isArray(workspaces) ? workspaces?.[0] : workspaces;
+
 
   const { count: leadsCount } = await supabase
     .from("leads")
@@ -40,8 +42,8 @@ export default async function DashboardPage({
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-display text-deep-teal-50">Dashboard</h1>
+        <p className="text-body text-deep-teal-200">
           Welcome back. Workspace: {ws?.name ?? "—"}
         </p>
       </div>
@@ -64,37 +66,43 @@ export default async function DashboardPage({
 
       {ws && (
         <>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Leads</CardTitle>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <Card className="p-6">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-label font-semibold text-deep-teal-50">Leads</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-2xl font-bold">{leadsCount ?? 0}</p>
-                <Link href="/app/leads">
-                  <Button variant="link" className="p-0 h-auto">View leads</Button>
+                <p className="text-section font-bold text-deep-teal-50">{leadsCount ?? 0}</p>
+                <div className="mt-2 h-1.5 w-full rounded-full bg-deep-teal-800 overflow-hidden">
+                  <div className="progress-bar-gradient h-full rounded-full" style={{ width: `${Math.min(100, ((leadsCount ?? 0) / 50) * 100)}%` }} />
+                </div>
+                <Link href="/app/leads" className="mt-2 inline-block">
+                  <Button variant="link" className="p-0 h-auto text-deep-teal-400">View leads</Button>
                 </Link>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Campaigns</CardTitle>
+            <Card className="p-6">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-label font-semibold text-deep-teal-50">Campaigns</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-2xl font-bold">{campaignsCount ?? 0}</p>
-                <Link href="/app/campaigns">
-                  <Button variant="link" className="p-0 h-auto">View campaigns</Button>
+                <p className="text-section font-bold text-deep-teal-50">{campaignsCount ?? 0}</p>
+                <div className="mt-2 h-1.5 w-full rounded-full bg-deep-teal-800 overflow-hidden">
+                  <div className="progress-bar-gradient h-full rounded-full" style={{ width: `${Math.min(100, ((campaignsCount ?? 0) / 20) * 100)}%` }} />
+                </div>
+                <Link href="/app/campaigns" className="mt-2 inline-block">
+                  <Button variant="link" className="p-0 h-auto text-deep-teal-400">View campaigns</Button>
                 </Link>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Plan</CardTitle>
+            <Card className="p-6">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-label font-semibold text-deep-teal-50">Plan</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-2xl font-bold capitalize">{ws.plan}</p>
-                <Link href="/app/settings#billing">
-                  <Button variant="link" className="p-0 h-auto">Manage billing</Button>
+                <p className="text-3xl font-bold text-deep-teal-50 capitalize">{ws.plan}</p>
+                <Link href="/app/settings#billing" className="mt-2 inline-block">
+                  <Button variant="link" className="p-0 h-auto text-deep-teal-400">Manage billing</Button>
                 </Link>
               </CardContent>
             </Card>

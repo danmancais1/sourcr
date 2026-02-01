@@ -26,7 +26,7 @@ export function RefreshPpdButton() {
         {loading ? "Refreshing PPD…" : "Refresh PPD (manual)"}
       </Button>
       {result && (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-body-sm text-deep-teal-200">
           {result.error
             ? "Error: " + result.error
             : `Imported: ${result.imported ?? 0}, errors: ${result.errors ?? 0}`}

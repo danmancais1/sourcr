@@ -37,7 +37,7 @@ export default async function NewCampaignPage() {
               <Label htmlFor="template_id">Template (optional)</Label>
               <select id="template_id" name="template_id" className="rounded-md border border-input bg-background px-3 py-2 text-sm w-full">
                 <option value="">—</option>
-                {(templates ?? []).map((t: { id: string; name: string; channel: string }) => (
+                {(templates ?? []).map((t: any) => (
                   <option key={t.id} value={t.id}>{t.name} ({t.channel})</option>
                 ))}
               </select>

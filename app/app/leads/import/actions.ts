@@ -26,15 +26,15 @@ function parseCsvLine(line: string): string[] {
 export async function importLeadsAction(formData: FormData) {
   const file = formData.get("file") as File;
   if (!file?.name?.endsWith(".csv")) {
-    return { error: "Please upload a CSV file." };
+    redirect("/app/leads/import?error=" + encodeURIComponent("Please upload a CSV file."));
   }
   const supabase = await createClient();
   const workspaceId = await getCurrentWorkspaceId(supabase);
-  if (!workspaceId) return { error: "Not authorised." };
+  if (!workspaceId) redirect("/app/leads/import?error=" + encodeURIComponent("Not authorised."));
 
   const text = await file.text();
   const lines = text.split(/\r?\n/).filter((l) => l.trim());
-  if (lines.length < 2) return { error: "CSV must have a header row and at least one data row." };
+  if (lines.length < 2) redirect("/app/leads/import?error=" + encodeURIComponent("CSV must have a header row and at least one data row."));
 
   const header = parseCsvLine(lines[0]).map((h) => h.toLowerCase().replace(/\s+/g, "_"));
   const addrIdx = header.findIndex((h) => h === "address_line_1" || h === "address");
@@ -45,7 +45,7 @@ export async function importLeadsAction(formData: FormData) {
   const phoneIdx = header.findIndex((h) => h === "owner_phone" || h === "phone");
 
   if (addrIdx === -1 || postcodeIdx === -1) {
-    return { error: "CSV must include address_line_1 (or address) and postcode columns." };
+    redirect("/app/leads/import?error=" + encodeURIComponent("CSV must include address_line_1 (or address) and postcode columns."));
   }
 
   let imported = 0;

@@ -2,55 +2,171 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: #EAFFDA;
-    --foreground: #363020;
-    --card: #C7C7A6;
-    --card-foreground: #363020;
-    --popover: #C7C7A6;
-    --popover-foreground: #363020;
-    --primary: #363020;
-    --primary-foreground: #EAFFDA;
-    --secondary: #605C4E;
-    --secondary-foreground: #EAFFDA;
-    --muted: #C7C7A6;
-    --muted-foreground: #605C4E;
-    --accent: #A49966;
-    --accent-foreground: #363020;
-    --destructive: #b91c1c;
-    --destructive-foreground: #fff;
-    --border: #605C4E;
-    --input: #605C4E;
-    --ring: #A49966;
-    --radius: 0.5rem;
-  }
-  .dark {
-    --background: #363020;
-    --foreground: #EAFFDA;
-    --card: #605C4E;
-    --card-foreground: #EAFFDA;
-    --popover: #605C4E;
-    --popover-foreground: #EAFFDA;
-    --primary: #A49966;
-    --primary-foreground: #363020;
-    --secondary: #605C4E;
-    --secondary-foreground: #EAFFDA;
-    --muted: #605C4E;
-    --muted-foreground: #C7C7A6;
-    --accent: #A49966;
-    --accent-foreground: #363020;
-    --border: #605C4E;
-    --input: #605C4E;
-    --ring: #A49966;
-  }
+/* Aspecta font: add woff2 files to public/fonts/ (Aspecta-Regular.woff2, etc) */
+@font-face {
+  font-family: "Aspecta";
+  src: url("/fonts/Aspecta-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Aspecta";
+  src: url("/fonts/Aspecta-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Aspecta";
+  src: url("/fonts/Aspecta-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Aspecta";
+  src: url("/fonts/Aspecta-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 @layer base {
-  * {
-    @apply border-border;
+  :root {
+    --background: #0a1a15;
+    --foreground: #edf8f5;
+    --card: #0e251e;
+    --card-foreground: #edf8f5;
+    --popover: #0e251e;
+    --popover-foreground: #edf8f5;
+    --primary: #47b898;
+    --primary-foreground: #ffffff;
+    --secondary: #1d493d;
+    --secondary-foreground: #b6e2d6;
+    --muted: #1d493d;
+    --muted-foreground: #91d4c1;
+    --accent: #47b898;
+    --accent-foreground: #ffffff;
+    --destructive: #b91c1c;
+    --destructive-foreground: #fff;
+    --border: #1d493d;
+    --input: #1d493d;
+    --ring: #47b898;
+    --radius: 16px;
   }
+
+  * {
+    border-color: #1d493d;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    background-color: #0a1a15;
+    color: #edf8f5;
+    font-family: "Aspecta", "Inter", "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+@layer utilities {
+  /* Typography scale — desktop */
+  .text-display {
+    font-size: 40px;
+    line-height: 48px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .text-section {
+    font-size: 28px;
+    line-height: 36px;
+    font-weight: 600;
+  }
+  .text-subsection {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 600;
+  }
+  .text-body-lg {
+    font-size: 18px;
+    line-height: 28px;
+    font-weight: 400;
+  }
+  .text-body {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+  }
+  .text-body-sm {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+  }
+  .text-label {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  /* Typography scale — mobile */
+  @media (max-width: 768px) {
+    .text-display { font-size: 32px; line-height: 40px; }
+    .text-section { font-size: 24px; line-height: 32px; }
+    .text-subsection { font-size: 18px; line-height: 26px; }
+  }
+}
+
+@layer components {
+  .premium-card {
+    @apply rounded-2xl shadow-lg border p-6;
+    background: linear-gradient(145deg, #0e251e, #1d493d);
+    border-color: #1d493d;
+    color: #edf8f5;
+  }
+
+  .premium-button {
+    @apply rounded-xl px-6 py-3 text-label transition-all;
+    background-color: #47b898;
+    color: white;
+    box-shadow: 0 4px 14px rgba(71, 184, 152, 0.3);
+  }
+
+  .premium-button:hover {
+    background-color: #6cc6ac;
+  }
+
+  .premium-button-secondary {
+    @apply rounded-xl px-6 py-3 text-label transition-all border;
+    background-color: #1d493d;
+    border-color: #2b6e5b;
+    color: #b6e2d6;
+  }
+
+  .premium-button-secondary:hover {
+    background-color: #2b6e5b;
+  }
+
+  .icon-container {
+    @apply rounded-xl flex items-center justify-center;
+    background-color: #2b6e5b;
+    color: #b6e2d6;
+    box-shadow: inset 0 0 20px rgba(71, 184, 152, 0.08);
+  }
+
+  .icon-container-circle {
+    @apply rounded-full flex items-center justify-center;
+    background-color: #2b6e5b;
+    color: #b6e2d6;
+    box-shadow: inset 0 0 20px rgba(71, 184, 152, 0.08);
+  }
+
+  .progress-bar-gradient {
+    background: linear-gradient(90deg, #6cc6ac, #399379);
+  }
+
+  .nav-item-active {
+    @apply border-l-4 border-deep-teal-500 pl-4;
+    background-color: #1d493d;
   }
 }

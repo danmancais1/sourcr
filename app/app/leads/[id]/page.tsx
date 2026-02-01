@@ -34,39 +34,46 @@ export default async function LeadDetailPage({
       <Card>
         <CardHeader>
           <CardTitle>{lead.title || "Untitled lead"}</CardTitle>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-deep-teal-200">
             Stage: {lead.pipeline_stage} {lead.score != null && ` · Score: ${lead.score}`}
           </p>
         </CardHeader>
         <CardContent className="space-y-4">
-          {lead.properties && (
-            <div>
-              <h3 className="font-medium">Property</h3>
-              <p className="text-sm text-muted-foreground">
-                {(lead.properties as { address_line_1?: string }).address_line_1},{" "}
-                {(lead.properties as { postcode?: string }).postcode}
-              </p>
-            </div>
-          )}
-          {lead.owners && (
-            <div>
-              <h3 className="font-medium">Owner</h3>
-              <p className="text-sm text-muted-foreground">
-                {(lead.owners as { name: string }).name}
-                {(lead.owners as { email?: string }).email && ` · ${(lead.owners as { email: string }).email}`}
-              </p>
-            </div>
-          )}
+          {(() => {
+            const property = (lead as any).properties?.[0];
+            const owner = (lead as any).owners?.[0];
+            return (
+              <>
+                {property && (
+                  <div>
+                    <h3 className="text-subsection font-medium">Property</h3>
+                    <p className="text-body-sm text-deep-teal-200">
+                      {property.address_line_1}, {property.postcode}
+                    </p>
+                  </div>
+                )}
+                {owner && (
+                  <div>
+                    <h3 className="text-subsection font-medium">Owner</h3>
+                    <p className="text-body-sm text-deep-teal-200">
+                      {owner.name}
+                      {owner.email && ` · ${owner.email}`}
+                    </p>
+                  </div>
+                )}
+              </>
+            );
+          })()}
           {lead.notes && (
             <div>
-              <h3 className="font-medium">Notes</h3>
-              <p className="text-sm text-muted-foreground">{lead.notes}</p>
+              <h3 className="text-subsection font-medium">Notes</h3>
+              <p className="text-body-sm text-deep-teal-200">{lead.notes}</p>
             </div>
           )}
           {lead.breakdown_json && (
             <div>
-              <h3 className="font-medium">Score breakdown</h3>
-              <pre className="mt-1 rounded bg-muted p-2 text-xs">
+              <h3 className="text-subsection font-medium">Score breakdown</h3>
+              <pre className="mt-1 rounded bg-deep-teal-800 p-2 text-xs">
                 {JSON.stringify(lead.breakdown_json, null, 2)}
               </pre>
             </div>

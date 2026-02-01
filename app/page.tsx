@@ -1,96 +1,304 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Shield,
+  Zap,
+  BarChart3,
+  LayoutDashboard,
+  Building2,
+  MessageSquare,
+  FileCheck,
+} from "lucide-react";
+import { LandingHero } from "@/components/landing/LandingHero";
+import { StatsBar } from "@/components/landing/StatsBar";
+import { TiltedCard } from "@/components/landing/TiltedCard";
+import { AppMockup } from "@/components/landing/AppMockup";
+import { FAQ } from "@/components/landing/FAQ";
 
-export default function LandingPage() {
+const benefits = [
+  {
+    icon: Shield,
+    title: "Compliance-first",
+    description:
+      "Suppression lists, opt-out handling, consent rules, and audit logs. Assisted sending only by default.",
+  },
+  {
+    icon: Zap,
+    title: "Real data signals",
+    description:
+      "Companies House, EPC, Gazette, and Land Registry. Distress scoring and off-market leads, no placeholders.",
+  },
+  {
+    icon: BarChart3,
+    title: "One pipeline",
+    description:
+      "Leads, scoring, pipeline, campaigns, and messaging in one place. Built for serious UK property investors.",
+  },
+  {
+    icon: LayoutDashboard,
+    title: "Premium interface",
+    description:
+      "Clean dashboard, quiet-sale submissions for sellers, and secure messaging. Works on desktop and mobile.",
+  },
+];
+
+const stepsInvestor = [
+  { num: "1", title: "Access signals", body: "Combine public data to score distressed properties and find off-market leads." },
+  { num: "2", title: "Find sellers", body: "Browse quiet-sale submissions and direct-seller matches by area and criteria." },
+  { num: "3", title: "Close deals", body: "Message sellers, run compliant campaigns, and manage your pipeline." },
+];
+
+const stepsSeller = [
+  { num: "1", title: "Submit property", body: "Simple form, no upfront fees. No estate agent commissions." },
+  { num: "2", title: "Get matched", body: "We match you with investors looking in your area and property type." },
+  { num: "3", title: "Sell discreetly", body: "Secure messaging. Control your privacy and engage only serious buyers." },
+];
+
+const testimonials = [
+  {
+    quote: "Sourcr transformed my deal pipeline. The distress signals are incredibly accurate and save me hours of manual research.",
+    author: "Tom H.",
+    role: "Property Investor",
+  },
+  {
+    quote: "I sold my property without listing it publicly. The investors on Sourcr were professional and the process was smooth.",
+    author: "Sarah M.",
+    role: "Landlord",
+  },
+  {
+    quote: "Finally, a compliant outreach tool that respects data privacy and opt-out rules. Essential for serious sourcers.",
+    author: "James P.",
+    role: "Property Sourcer",
+  },
+];
+
+export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <Link href="/" className="text-xl font-bold text-primary">
+    <div className="min-h-screen bg-deep-teal-950 text-deep-teal-50 overflow-x-hidden">
+      {/* Gradient mesh background */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-[70vh] opacity-80"
+          style={{
+            background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(71, 184, 152, 0.08) 0%, transparent 60%)",
+          }}
+        />
+        <div
+          className="absolute bottom-1/4 right-0 w-[60%] h-[50vh] opacity-60"
+          style={{
+            background: "radial-gradient(ellipse at 100% 80%, rgba(71, 184, 152, 0.05) 0%, transparent 50%)",
+          }}
+        />
+      </div>
+
+      {/* Header */}
+      <header className="sticky top-0 z-50 border-b border-deep-teal-800/80 bg-deep-teal-950/90 backdrop-blur-xl">
+        <div className="container mx-auto flex h-16 items-center justify-between px-6">
+          <Link href="/" className="text-subsection font-bold text-deep-teal-50 tracking-tight">
             Sourcr
           </Link>
-          <nav className="flex items-center gap-4">
-            <Link href="/pricing" className="text-sm text-muted-foreground hover:text-foreground">
-              Pricing
-            </Link>
-            <Link href="/quiet-sale" className="text-sm text-muted-foreground hover:text-foreground">
-              Quiet Sale
+          <nav className="flex items-center gap-2">
+            <Link href="/pricing">
+              <Button variant="ghost" size="sm" className="text-deep-teal-200 hover:text-deep-teal-50">
+                Pricing
+              </Button>
             </Link>
             <Link href="/login">
-              <Button variant="ghost">Log in</Button>
+              <Button variant="ghost" size="sm" className="text-deep-teal-200 hover:text-deep-teal-50">
+                Log in
+              </Button>
             </Link>
             <Link href="/signup">
-              <Button>Get started</Button>
+              <Button size="sm" className="premium-button">Get started</Button>
             </Link>
           </nav>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-16">
-        <section className="mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            UK property sourcing & quiet-sale marketplace
-          </h1>
-          <p className="mt-4 text-lg text-muted-foreground">
-            Source leads, score distress, run compliant outreach. Connect with landlords who want a quiet sale.
+      {/* Hero */}
+      <LandingHero />
+
+      {/* Social proof / stats */}
+      <StatsBar />
+
+      {/* Why Sourcr – tilted benefit cards */}
+      <section className="container mx-auto px-6 py-24">
+        <h2 className="text-section font-bold text-deep-teal-50 text-center mb-4">
+          Why choose Sourcr?
+        </h2>
+        <p className="text-body-lg text-deep-teal-300 text-center max-w-2xl mx-auto mb-16">
+          Built for seamless, compliant, and data-driven property sourcing and quiet sales.
+        </p>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {benefits.map((b, i) => (
+            <TiltedCard key={b.title} className="h-full" tiltAmount={6} delay={i * 0.1}>
+              <Card className="h-full border-deep-teal-700/80 bg-deep-teal-900/70 shadow-xl shadow-black/20 hover:shadow-deep-teal-glow/30 transition-shadow">
+                <CardContent className="p-6">
+                  <div className="icon-container w-12 h-12 rounded-xl mb-4">
+                    <b.icon className="h-6 w-6 text-deep-teal-200" />
+                  </div>
+                  <h3 className="text-subsection font-semibold text-deep-teal-50 mb-2">{b.title}</h3>
+                  <p className="text-body-sm text-deep-teal-300">{b.description}</p>
+                </CardContent>
+              </Card>
+            </TiltedCard>
+          ))}
+        </div>
+      </section>
+
+      {/* Product showcase – one platform + mockup */}
+      <section className="border-y border-deep-teal-800/80 bg-deep-teal-900/30 py-24">
+        <div className="container mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-section font-bold text-deep-teal-50 mb-4">
+                One platform for investors and sellers
+              </h2>
+              <p className="text-body-lg text-deep-teal-300 mb-8">
+                Dashboard, leads, pipeline, campaigns, and messaging in one place. Sellers get a simple quiet-sale form and secure matching—no public listings.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link href="/signup?intent=investor">
+                  <Button size="lg" className="premium-button">
+                    I&apos;m an investor
+                  </Button>
+                </Link>
+                <Link href="/quiet-sale">
+                  <Button size="lg" variant="outline" className="border-deep-teal-600 text-deep-teal-300 hover:bg-deep-teal-800">
+                    Submit a property
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            <div className="relative flex justify-center lg:justify-end">
+              <AppMockup variant="browser" placeholderLabel="Dashboard preview" className="w-full max-w-xl" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How it works – two columns */}
+      <section className="container mx-auto px-6 py-24">
+        <h2 className="text-section font-bold text-deep-teal-50 text-center mb-4">
+          How it works
+        </h2>
+        <p className="text-body text-deep-teal-300 text-center max-w-2xl mx-auto mb-16">
+          A simple, fast, and compliant platform for investors and sellers—in a few steps.
+        </p>
+        <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+          <Card className="border-deep-teal-700/80 bg-deep-teal-900/60">
+            <CardContent className="p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <Building2 className="h-8 w-8 text-deep-teal-400" />
+                <h3 className="text-subsection font-semibold text-deep-teal-50">For investors</h3>
+              </div>
+              <ul className="space-y-6">
+                {stepsInvestor.map((s) => (
+                  <li key={s.num} className="flex gap-4">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-deep-teal-700 text-label font-bold text-deep-teal-300">
+                      {s.num}
+                    </span>
+                    <div>
+                      <h4 className="text-label font-semibold text-deep-teal-200">{s.title}</h4>
+                      <p className="text-body-sm text-deep-teal-400 mt-0.5">{s.body}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+          <Card className="border-deep-teal-700/80 bg-deep-teal-900/60">
+            <CardContent className="p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <MessageSquare className="h-8 w-8 text-deep-teal-400" />
+                <h3 className="text-subsection font-semibold text-deep-teal-50">For sellers</h3>
+              </div>
+              <ul className="space-y-6">
+                {stepsSeller.map((s) => (
+                  <li key={s.num} className="flex gap-4">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-deep-teal-700 text-label font-bold text-deep-teal-300">
+                      {s.num}
+                    </span>
+                    <div>
+                      <h4 className="text-label font-semibold text-deep-teal-200">{s.title}</h4>
+                      <p className="text-body-sm text-deep-teal-400 mt-0.5">{s.body}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="bg-deep-teal-900/40 py-24 border-y border-deep-teal-800/80">
+        <div className="container mx-auto px-6">
+          <h2 className="text-section font-bold text-deep-teal-50 text-center mb-4">
+            Trusted by investors and sellers
+          </h2>
+          <p className="text-body text-deep-teal-300 text-center max-w-2xl mx-auto mb-14">
+            Join a growing community who use Sourcr for compliant sourcing and discreet sales.
           </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {testimonials.map((t, i) => (
+              <Card key={i} className="border-deep-teal-700/80 bg-deep-teal-950/60">
+                <CardContent className="p-6">
+                  <FileCheck className="h-8 w-8 text-deep-teal-500/60 mb-4" />
+                  <p className="text-body-sm text-deep-teal-200 mb-4">&ldquo;{t.quote}&rdquo;</p>
+                  <p className="text-label font-semibold text-deep-teal-400">
+                    — {t.author}, {t.role}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <FAQ />
+
+      {/* Final CTA */}
+      <section className="border-t border-deep-teal-800/80 bg-deep-teal-950/80 py-24">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-section font-bold text-deep-teal-50 mb-4">
+            Ready to take control of your property pipeline?
+          </h2>
+          <p className="text-body-lg text-deep-teal-300 mb-10 max-w-2xl mx-auto">
+            Join investors and sellers who use Sourcr for secure, compliant, and data-driven deals.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <Link href="/signup">
-              <Button size="lg" className="bg-sourcr-dark text-sourcr-mint hover:bg-sourcr-brown">
-                For investors
+              <Button size="lg" className="premium-button text-label px-10 py-4">
+                Get started now
               </Button>
             </Link>
-            <Link href="/quiet-sale">
-              <Button size="lg" variant="outline">
-                I want a quiet sale
+            <Link href="/pricing">
+              <Button size="lg" variant="outline" className="border-deep-teal-600 text-deep-teal-300 hover:bg-deep-teal-800">
+                View pricing
               </Button>
             </Link>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mt-24 grid gap-8 md:grid-cols-2">
-          <Card className="border-sourcr-gold/30 bg-card">
-            <CardHeader>
-              <CardTitle className="text-sourcr-dark">For investors</CardTitle>
-              <CardDescription>
-                Manage leads, score distress signals, run compliant letter/email/SMS campaigns with assisted sending, suppression lists and daily limits.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Link href="/signup">
-                <Button className="w-full">Start sourcing</Button>
+      {/* Footer */}
+      <footer className="border-t border-deep-teal-800 py-12">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <p className="text-body-sm text-deep-teal-400">
+              © 2026 Sourcr. All rights reserved.
+            </p>
+            <div className="flex items-center gap-6">
+              <Link href="/terms" className="text-body-sm text-deep-teal-400 hover:text-deep-teal-50">
+                Terms of Service
               </Link>
-            </CardContent>
-          </Card>
-          <Card className="border-sourcr-gold/30 bg-card">
-            <CardHeader>
-              <CardTitle className="text-sourcr-dark">For landlords</CardTitle>
-              <CardDescription>
-                Submit your property for a quiet sale. We match you with verified investors and you message through the platform.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Link href="/quiet-sale">
-                <Button variant="outline" className="w-full">
-                  Submit quiet sale
-                </Button>
+              <Link href="/privacy" className="text-body-sm text-deep-teal-400 hover:text-deep-teal-50">
+                Privacy Policy
               </Link>
-            </CardContent>
-          </Card>
-        </section>
-      </main>
-
-      <footer className="mt-24 border-t border-border py-8">
-        <div className="container mx-auto flex flex-wrap items-center justify-between gap-4 px-4">
-          <span className="text-sm text-muted-foreground">© Sourcr. UK property sourcing.</span>
-          <div className="flex gap-6">
-            <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground">
-              Terms
-            </Link>
-            <Link href="/privacy" className="text-sm text-muted-foreground hover:text-foreground">
-              Privacy
-            </Link>
+            </div>
           </div>
         </div>
       </footer>

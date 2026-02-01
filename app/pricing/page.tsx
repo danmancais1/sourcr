@@ -27,14 +27,14 @@ const plans = [
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border">
+    <div className="min-h-screen bg-deep-teal-950">
+      <header className="border-b border-deep-teal-800 bg-deep-teal-900/80 backdrop-blur">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <Link href="/" className="text-xl font-bold text-primary">
+          <Link href="/" className="text-subsection font-bold text-deep-teal-50">
             Sourcr
           </Link>
           <nav className="flex items-center gap-4">
-            <Link href="/pricing" className="text-sm font-medium">
+            <Link href="/pricing" className="text-label font-medium">
               Pricing
             </Link>
             <Link href="/login">
@@ -49,10 +49,10 @@ export default function PricingPage() {
 
       <main className="container mx-auto px-4 py-16">
         <div className="mx-auto max-w-2xl text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground">
+          <h1 className="text-display text-deep-teal-50">
             Simple pricing
           </h1>
-          <p className="mt-2 text-muted-foreground">
+          <p className="mt-2 text-body text-deep-teal-200">
             Choose Starter or Pro. Cancel anytime.
           </p>
         </div>
@@ -62,25 +62,25 @@ export default function PricingPage() {
               key={plan.name}
               className={
                 plan.highlighted
-                  ? "border-sourcr-gold ring-2 ring-sourcr-gold/30"
-                  : "border-border"
+                  ? "border-deep-teal-500 ring-2 ring-deep-teal-500/30"
+                  : "border-deep-teal-800"
               }
             >
               <CardHeader>
                 <CardTitle>{plan.name}</CardTitle>
                 <CardDescription>{plan.description}</CardDescription>
-                <p className="text-3xl font-bold text-foreground">
+                <p className="text-section font-bold text-deep-teal-50">
                   {plan.price}
-                  <span className="text-base font-normal text-muted-foreground">
+                  <span className="text-body font-normal text-deep-teal-200">
                     {plan.period}
                   </span>
                 </p>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-sm text-muted-foreground">
+                <ul className="space-y-2 text-body-sm text-deep-teal-200">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-center gap-2">
-                      <span className="text-sourcr-mint">✓</span>
+                      <span className="text-deep-teal-400">✓</span>
                       {f}
                     </li>
                   ))}

@@ -92,7 +92,7 @@ async function seed() {
     .select("id");
 
   const stages = ["new", "contacted", "viewing", "offer", "won", "lost"];
-  const leads = (properties ?? []).map((p: { id: string }, i: number) => ({
+  const leads = (properties ?? []).map((p: any, i: number) => ({
     workspace_id: workspaceId,
     property_id: p.id,
     owner_id: (owners ?? [])[i]?.id ?? null,
@@ -145,7 +145,7 @@ async function seed() {
     .select("id");
 
   // Matches: link first 3 landlord submissions to workspace
-  const matchSubIds = (landlordSubs ?? []).slice(0, 3).map((s: { id: string }) => s.id);
+  const matchSubIds = (landlordSubs ?? []).slice(0, 3).map((s: any) => s.id);
   for (const subId of matchSubIds) {
     await supabase.from("matches").insert({
       landlord_submission_id: subId,

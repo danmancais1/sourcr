@@ -102,7 +102,7 @@ export async function getCompsByPostcodeSector(
     .ilike("postcode", pattern)
     .order("transfer_date", { ascending: false })
     .limit(options?.limit ?? 100);
-  const sales = (rows ?? []).map((r: { price: number; transfer_date: string; postcode: string }) => ({
+  const sales = (rows ?? []).map((r: any) => ({
     price: r.price,
     transfer_date: r.transfer_date,
     postcode: r.postcode,

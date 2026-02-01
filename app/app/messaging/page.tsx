@@ -19,38 +19,54 @@ export default async function MessagingPage({
     .eq("workspace_id", workspaceId)
     .order("created_at", { ascending: false });
 
-  const selectedId = params.match ?? (matches?.[0] as { id: string } | undefined)?.id;
+  const selectedId = params.match ?? (matches ?? [])[0]?.id;
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Messaging</h1>
+      <h1 className="text-display">Messaging</h1>
+
       <div className="grid gap-4 md:grid-cols-3">
         <Card className="md:col-span-1">
           <CardHeader>
-            <CardTitle className="text-sm">Threads</CardTitle>
+            <CardTitle className="text-label">Threads</CardTitle>
           </CardHeader>
+
           <CardContent>
             <ul className="space-y-1">
-              {(matches ?? []).map((m: { id: string; landlord_submissions: { address_line_1: string; postcode: string; contact_name: string } | null }) => (
-                <li key={m.id}>
-                  <a
-                    href={`/app/messaging?match=${m.id}`}
-                    className={`block rounded px-2 py-2 text-sm ${selectedId === m.id ? "bg-muted font-medium" : "hover:bg-muted/50"}`}
-                  >
-                    {m.landlord_submissions
-                      ? `${(m.landlord_submissions as { address_line_1: string }).address_line_1}, ${(m.landlord_submissions as { postcode: string }).postcode}`
-                      : "—"}
-                  </a>
-                </li>
-              ))}
+              {(matches ?? []).map((m: any) => {
+                const submission = m.landlord_submissions?.[0];
+
+                return (
+                  <li key={m.id}>
+                    <a
+                      href={`/app/messaging?match=${m.id}`}
+                      className={`block rounded px-2 py-2 text-body-sm ${
+                        selectedId === m.id
+                          ? "bg-deep-teal-800 font-medium"
+                          : "hover:bg-deep-teal-800/50"
+                      }`}
+                    >
+                      {submission
+                        ? `${submission.address_line_1}, ${submission.postcode}`
+                        : "—"}
+                      {submission?.contact_name && (
+                        <span className="ml-2 text-body-sm text-deep-teal-200">
+                          ({submission.contact_name})
+                        </span>
+                      )}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </CardContent>
         </Card>
+
         <Card className="md:col-span-2">
           {selectedId ? (
             <MessagingThread matchId={selectedId} workspaceId={workspaceId} />
           ) : (
-            <CardContent className="py-8 text-center text-muted-foreground">
+            <CardContent className="py-8 text-center text-body-sm text-deep-teal-200">
               Select a thread or create a match from Direct Sellers.
             </CardContent>
           )}
