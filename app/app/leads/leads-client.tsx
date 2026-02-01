@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getLeadsFeed, type LeadsFeed, type LeadsFeedItem, type LeadsSubmissionItem } from "./leads-actions";
 import { SOURCING_CATEGORIES } from "@/lib/sourcing-categories";
 
@@ -83,9 +83,6 @@ export function LeadsClient() {
     <div className="space-y-6">
       <div>
         <h1 className="text-display text-deep-teal-50">Leads</h1>
-        <p className="text-body text-deep-teal-200 mt-1">
-          Browse leads by category. Toggle between categories to see each feed.
-        </p>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -106,14 +103,10 @@ export function LeadsClient() {
         <Card>
           <CardHeader>
             <CardTitle>{currentCategory.label}</CardTitle>
-            <CardDescription>{currentCategory.description}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-3">
-              <h3 className="text-label font-semibold text-deep-teal-50">Leads</h3>
-              {feed.leads.length === 0 ? (
-                <p className="text-body-sm text-deep-teal-400">No leads in this category yet.</p>
-              ) : (
+              {feed.leads.length > 0 && (
                 <ul className="divide-y divide-deep-teal-800">
                   {feed.leads.map((item) => (
                     <LeadRow key={item.id} item={item} />
@@ -123,10 +116,7 @@ export function LeadsClient() {
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-label font-semibold text-deep-teal-50">Direct submissions</h3>
-              {feed.submissions.length === 0 ? (
-                <p className="text-body-sm text-deep-teal-400">No submissions in this category yet.</p>
-              ) : (
+              {feed.submissions.length > 0 && (
                 <ul className="divide-y divide-deep-teal-800">
                   {feed.submissions.map((item) => (
                     <SubmissionRow key={item.id} item={item} />

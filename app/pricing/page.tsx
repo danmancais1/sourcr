@@ -33,9 +33,6 @@ export default function PricingPage() {
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <PropIxLogo href="/" size="sm" />
           <nav className="flex items-center gap-4">
-            <Link href="/pricing" className="text-label font-medium">
-              Pricing
-            </Link>
             <Link href="/login">
               <Button variant="ghost">Log in</Button>
             </Link>

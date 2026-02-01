@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getSellerDirectory } from "./actions";
 
 export const dynamic = "force-dynamic";
@@ -11,17 +11,11 @@ export default async function SellersPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-display text-deep-teal-50">Sellers</h1>
-        <p className="text-body text-deep-teal-200 mt-2">
-          Registered sellers on the platform who have opted in to be listed.
-        </p>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle className="text-deep-teal-50">Seller directory</CardTitle>
-          <CardDescription className="text-deep-teal-200">
-            Contact details of sellers. Use these to reach out about opportunities.
-          </CardDescription>
         </CardHeader>
         <CardContent>
           {entries.length === 0 ? (

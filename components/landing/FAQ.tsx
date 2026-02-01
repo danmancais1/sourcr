@@ -32,7 +32,7 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="container mx-auto px-6 py-24">
+    <section className="container mx-auto w-full max-w-[100vw] px-4 sm:px-6 py-24 box-border overflow-hidden">
       <motion.h2
         className="text-section font-bold text-deep-teal-50 text-center mb-4"
         initial={{ opacity: 0, y: 20 }}
@@ -42,14 +42,14 @@ export function FAQ() {
         Your questions, answered
       </motion.h2>
       <motion.p
-        className="text-body text-deep-teal-300 text-center max-w-2xl mx-auto mb-14"
+        className="text-body text-deep-teal-300 text-center max-w-2xl mx-auto mb-14 px-2"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
       >
         Everything you need to know about Prop IX, from compliance to pricing.
       </motion.p>
-      <div className="max-w-3xl mx-auto space-y-2">
+      <div className="max-w-3xl mx-auto space-y-2 min-w-0 w-full">
         {items.map((item, i) => (
           <motion.div
             key={item.q}

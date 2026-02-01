@@ -63,7 +63,7 @@ const testimonials = [
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-deep-teal-950 text-deep-teal-50 overflow-x-hidden">
+    <div className="min-h-screen w-full max-w-[100vw] bg-deep-teal-950 text-deep-teal-50 overflow-x-hidden">
       {/* Gradient mesh background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
         <div
@@ -81,8 +81,8 @@ export default function HomePage() {
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-deep-teal-800/80 bg-deep-teal-950/90 backdrop-blur-xl">
-        <div className="container mx-auto flex h-14 md:h-16 items-center justify-between gap-4 px-4 md:px-6">
+      <header className="sticky top-0 z-50 border-b border-deep-teal-800/80 bg-deep-teal-950/90 backdrop-blur-xl w-full max-w-[100vw] overflow-hidden">
+        <div className="container mx-auto flex h-14 md:h-16 items-center justify-between gap-4 px-4 md:px-6 w-full box-border">
           <PropIxLogo href="/" size="sm" />
           <nav className="flex items-center gap-1 sm:gap-2">
             <Link href="/pricing">
@@ -109,14 +109,14 @@ export default function HomePage() {
       <StatsBar />
 
       {/* Why Prop IX – tilted benefit cards */}
-      <section className="container mx-auto px-4 md:px-6 py-16 md:py-24">
+      <section className="container mx-auto w-full max-w-[100vw] px-4 md:px-6 py-16 md:py-24 box-border">
         <h2 className="text-section font-bold text-deep-teal-50 text-center mb-4">
           Why choose Prop IX?
         </h2>
-        <p className="text-body-lg text-deep-teal-300 text-center max-w-2xl mx-auto mb-16">
+        <p className="text-body-lg text-deep-teal-300 text-center max-w-2xl mx-auto mb-16 px-1">
           Built for seamless, compliant, and data-driven property sourcing and quiet sales.
         </p>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 min-w-0">
           {benefits.map((b, i) => (
             <TiltedCard key={b.title} className="h-full" tiltAmount={6} delay={i * 0.1}>
               <Card className="h-full border-deep-teal-700/80 bg-deep-teal-900/70 shadow-xl shadow-black/20 shadow-[0_0_40px_rgba(1,205,158,0.12)] hover:shadow-[0_0_50px_rgba(1,205,158,0.18)] transition-shadow">
@@ -131,10 +131,10 @@ export default function HomePage() {
       </section>
 
       {/* Product showcase – one platform + mockup */}
-      <section className="border-y border-deep-teal-800/80 bg-deep-teal-900/30 py-16 md:py-24 shadow-[inset_0_0_80px_rgba(1,205,158,0.06)]">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid lg:grid-cols-2 gap-10 md:gap-16 items-center">
-            <div>
+      <section className="border-y border-deep-teal-800/80 bg-deep-teal-900/30 py-16 md:py-24 shadow-[inset_0_0_80px_rgba(1,205,158,0.06)] overflow-hidden">
+        <div className="container mx-auto w-full max-w-[100vw] px-4 md:px-6 box-border">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center min-w-0">
+            <div className="min-w-0">
               <h2 className="text-section font-bold text-deep-teal-50 mb-4">
                 One platform for investors and sellers
               </h2>
@@ -154,22 +154,22 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="relative flex justify-center lg:justify-end">
-              <AppMockup variant="browser" placeholderLabel="Dashboard preview" className="w-full max-w-xl" />
+            <div className="relative flex justify-center lg:justify-end min-w-0">
+              <AppMockup variant="browser" placeholderLabel="Dashboard preview" className="w-full max-w-xl min-w-0" />
             </div>
           </div>
         </div>
       </section>
 
       {/* How it works – two columns */}
-      <section className="container mx-auto px-4 md:px-6 py-16 md:py-24">
+      <section className="container mx-auto w-full max-w-[100vw] px-4 md:px-6 py-16 md:py-24 box-border">
         <h2 className="text-section font-bold text-deep-teal-50 text-center mb-4">
           How it works
         </h2>
-        <p className="text-body text-deep-teal-300 text-center max-w-2xl mx-auto mb-16">
+        <p className="text-body text-deep-teal-300 text-center max-w-2xl mx-auto mb-16 px-1">
           A simple, fast, and compliant platform for investors and sellers—in a few steps.
         </p>
-        <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto min-w-0">
           <Card className="border-deep-teal-700/80 bg-deep-teal-900/60 shadow-[0_0_40px_rgba(1,205,158,0.08)]">
             <CardContent className="p-8">
               <h3 className="text-subsection font-semibold text-deep-teal-50 mb-6">For investors</h3>
@@ -210,15 +210,15 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className="bg-deep-teal-900/40 py-16 md:py-24 border-y border-deep-teal-800/80">
-        <div className="container mx-auto px-4 md:px-6">
+      <section className="bg-deep-teal-900/40 py-16 md:py-24 border-y border-deep-teal-800/80 overflow-hidden">
+        <div className="container mx-auto w-full max-w-[100vw] px-4 md:px-6 box-border">
           <h2 className="text-section font-bold text-deep-teal-50 text-center mb-4">
             Trusted by investors and sellers
           </h2>
-          <p className="text-body text-deep-teal-300 text-center max-w-2xl mx-auto mb-14">
+          <p className="text-body text-deep-teal-300 text-center max-w-2xl mx-auto mb-14 px-1">
             Join a growing community who use Prop IX for compliant sourcing and discreet sales.
           </p>
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto min-w-0">
             {testimonials.map((t, i) => (
               <Card key={i} className="border-deep-teal-700/80 bg-deep-teal-950/60">
                 <CardContent className="p-6">
@@ -237,15 +237,15 @@ export default function HomePage() {
       <FAQ />
 
       {/* Final CTA */}
-      <section className="border-t border-deep-teal-800/80 bg-deep-teal-950/80 py-16 md:py-24 shadow-[inset_0_0_100px_rgba(1,205,158,0.06)]">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-section font-bold text-deep-teal-50 mb-4">
+      <section className="border-t border-deep-teal-800/80 bg-deep-teal-950/80 py-16 md:py-24 shadow-[inset_0_0_100px_rgba(1,205,158,0.06)] overflow-hidden">
+        <div className="container mx-auto w-full max-w-[100vw] px-4 md:px-6 text-center box-border">
+          <h2 className="text-section font-bold text-deep-teal-50 mb-4 px-2">
             Ready to take control of your property pipeline?
           </h2>
-          <p className="text-body-lg text-deep-teal-300 mb-10 max-w-2xl mx-auto">
+          <p className="text-body-lg text-deep-teal-300 mb-10 max-w-2xl mx-auto px-2">
             Join investors and sellers who use Prop IX for secure, compliant, and data-driven deals.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 px-2">
             <Link href="/signup">
               <Button size="lg" className="premium-button text-label min-h-[48px] touch-manipulation px-8 md:px-10 py-4">
                 Get started now
@@ -261,8 +261,8 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-deep-teal-800 py-8 md:py-12">
-        <div className="container mx-auto px-4 md:px-6">
+      <footer className="border-t border-deep-teal-800 py-8 md:py-12 overflow-hidden">
+        <div className="container mx-auto w-full max-w-[100vw] px-4 md:px-6 box-border">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <p className="text-body-sm text-deep-teal-400">
               © 2026 Prop IX. All rights reserved.

@@ -13,13 +13,13 @@ const stats = [
 export function StatsBar() {
   return (
     <motion.section
-      className="border-y border-deep-teal-800/80 bg-deep-teal-950/50 py-10"
+      className="border-y border-deep-teal-800/80 bg-deep-teal-950/50 py-10 overflow-hidden"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
     >
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto w-full max-w-[100vw] px-4 sm:px-6 box-border">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {stats.map((stat, i) => (
             <motion.div
