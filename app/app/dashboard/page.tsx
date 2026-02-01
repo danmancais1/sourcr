@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,6 +28,10 @@ export default async function DashboardPage({
   const first = (memberships ?? [])[0] as any;
   const workspaces = first?.workspaces;
   const ws = Array.isArray(workspaces) ? workspaces?.[0] : workspaces;
+
+  if (!ws?.id) {
+    redirect("/app/onboarding");
+  }
 
 
   const { count: leadsCount } = await supabase
