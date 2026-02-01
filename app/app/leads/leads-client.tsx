@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getLeadsFeed, type LeadsFeed, type LeadsFeedItem, type LeadsSubmissionItem } from "./leads-actions";
+import { getLeadsFeed, type LeadsFeed, type LeadsFeedItem, type LeadsSubmissionItem, type CompanySignalItem } from "./leads-actions";
 import { SOURCING_CATEGORIES } from "@/lib/sourcing-categories";
 
 const POLL_INTERVAL_MS = 2000;
@@ -53,7 +53,7 @@ export function LeadsClient() {
     getLeadsFeed(categoryId)
       .then((res) => {
         setFeed(res);
-        if (!res.workspaceId && res.leads.length === 0 && res.submissions.length === 0) {
+        if (!res.workspaceId && res.leads.length === 0 && res.submissions.length === 0 && res.companySignals.length === 0) {
           router.replace("/app/onboarding");
         }
       })
@@ -106,6 +106,16 @@ export function LeadsClient() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-3">
+              {feed.companySignals.length > 0 && (
+                <ul className="divide-y divide-deep-teal-800">
+                  {feed.companySignals.map((item) => (
+                    <CompanySignalRow key={item.id} item={item} />
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div className="space-y-3">
               {feed.leads.length > 0 && (
                 <ul className="divide-y divide-deep-teal-800">
                   {feed.leads.map((item) => (
@@ -128,6 +138,40 @@ export function LeadsClient() {
         </Card>
       )}
     </div>
+  );
+}
+
+const COMPANIES_HOUSE_URL = "https://find-and-update.company-information.service.gov.uk/company";
+
+function CompanySignalRow({ item }: { item: CompanySignalItem }) {
+  const profileUrl = `${COMPANIES_HOUSE_URL}/${item.company_number}`;
+  return (
+    <li className="py-3">
+      <div className="flex items-start justify-between gap-2">
+        <div>
+          <a
+            href={profileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-deep-teal-50 hover:text-deep-teal-400 hover:underline"
+          >
+            {item.company_name || item.company_number}
+          </a>
+          <p className="text-body-sm text-deep-teal-200 mt-0.5">{item.headline}</p>
+          <p className="text-body-sm text-deep-teal-400 mt-0.5">
+            {item.source === "companies_house" ? "Companies House" : item.source} · {item.confidence}% confidence
+          </p>
+        </div>
+        <a
+          href={profileUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-body-sm text-deep-teal-400 hover:text-deep-teal-200 shrink-0"
+        >
+          View
+        </a>
+      </div>
+    </li>
   );
 }
 

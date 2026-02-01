@@ -1,6 +1,6 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { getCurrentWorkspaceId } from "@/lib/workspace";
 import { SOURCING_CATEGORY_IDS } from "@/lib/sourcing-categories";
 
@@ -26,24 +26,39 @@ export type LeadsSubmissionItem = {
   created_at: string;
 };
 
+/** Company signals from signal_events (e.g. Companies House). */
+export type CompanySignalItem = {
+  id: string;
+  type: "company_signal";
+  source: string;
+  category: string;
+  headline: string;
+  occurred_at: string;
+  company_number: string;
+  company_name: string;
+  confidence: number;
+};
+
 export type LeadsFeed = {
   workspaceId: string | null;
   categoryId: string | null;
   leads: LeadsFeedItem[];
   submissions: LeadsSubmissionItem[];
+  companySignals: CompanySignalItem[];
 };
 
 export async function getLeadsFeed(categoryId: string | null): Promise<LeadsFeed> {
   const supabase = await createClient();
   const workspaceId = await getCurrentWorkspaceId(supabase);
   if (!workspaceId) {
-    return { workspaceId: null, categoryId, leads: [], submissions: [] };
+    return { workspaceId: null, categoryId, leads: [], submissions: [], companySignals: [] };
   }
 
   const category = categoryId && SOURCING_CATEGORY_IDS.includes(categoryId as any) ? categoryId : SOURCING_CATEGORY_IDS[0];
 
   const leads: LeadsFeedItem[] = [];
   const submissions: LeadsSubmissionItem[] = [];
+  let companySignals: CompanySignalItem[] = [];
 
   if (category) {
     const { data: signalRows } = await supabase
@@ -98,5 +113,37 @@ export async function getLeadsFeed(categoryId: string | null): Promise<LeadsFeed
     }
   }
 
-  return { workspaceId, categoryId: category, leads, submissions };
+  if (category) {
+    try {
+      const serviceSupabase = await createServiceRoleClient();
+      const categoriesToShow =
+        category === "financial_distress" || category === "corporate_disposal"
+          ? [category, "watchlist_update"]
+          : [category];
+      const { data: signalRows, error: signalError } = await serviceSupabase
+        .from("signal_events")
+        .select("id, source, category, headline, occurred_at, company_number, company_name, confidence")
+        .in("category", categoriesToShow)
+        .order("occurred_at", { ascending: false })
+        .limit(50);
+      if (signalError) {
+        console.error("getLeadsFeed: signal_events error", signalError);
+      }
+      companySignals = (signalRows ?? []).map((r) => ({
+        id: r.id,
+        type: "company_signal" as const,
+        source: r.source ?? "",
+        category: r.category ?? "",
+        headline: r.headline ?? "",
+        occurred_at: r.occurred_at ?? "",
+        company_number: r.company_number ?? "",
+        company_name: r.company_name ?? "",
+        confidence: r.confidence ?? 0,
+      }));
+    } catch (e) {
+      console.error("getLeadsFeed: signal_events fetch failed", e);
+    }
+  }
+
+  return { workspaceId, categoryId: category, leads, submissions, companySignals };
 }
