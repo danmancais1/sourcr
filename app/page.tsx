@@ -81,7 +81,7 @@ export default function HomePage() {
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-deep-teal-800/80 bg-deep-teal-950/90 backdrop-blur-xl w-full max-w-[100vw] overflow-hidden">
+      <header className="sticky top-0 z-50 border-b border-deep-teal-800/80 bg-deep-teal-950 w-full max-w-[100vw] overflow-hidden">
         <div className="container mx-auto flex h-14 md:h-16 items-center justify-between gap-4 px-4 md:px-6 w-full box-border">
           <PropIxLogo href="/" size="sm" />
           <nav className="flex items-center gap-1 sm:gap-2">

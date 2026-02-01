@@ -29,7 +29,7 @@ const items = [
 ];
 
 export function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
     <section className="container mx-auto w-full max-w-[100vw] px-4 sm:px-6 py-24 box-border overflow-hidden">

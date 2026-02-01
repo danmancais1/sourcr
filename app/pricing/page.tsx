@@ -29,7 +29,7 @@ const plans = [
 export default function PricingPage() {
   return (
     <div className="min-h-screen bg-deep-teal-950">
-      <header className="border-b border-deep-teal-800 bg-deep-teal-900/80 backdrop-blur">
+      <header className="border-b border-deep-teal-800 bg-deep-teal-950">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <PropIxLogo href="/" size="sm" />
           <nav className="flex items-center gap-4">

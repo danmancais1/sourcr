@@ -84,7 +84,7 @@ export function AppLayoutClient({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-deep-teal-950 flex">
-      <AppSidebar logoHref="/app/leads">
+      <AppSidebar logoHref="/app/dashboard">
         <AppNav />
         <div className="mt-auto pt-4 border-t border-deep-teal-800">
           <form action="/api/auth/signout" method="post">
@@ -99,7 +99,7 @@ export function AppLayoutClient({ children }: { children: React.ReactNode }) {
           </form>
         </div>
       </AppSidebar>
-      <main className="flex-1 overflow-auto p-4 md:p-6 pt-14 md:pt-6">{children}</main>
+      <main className="flex-1 overflow-auto pl-14 pr-4 pb-4 pt-14 md:pl-6 md:pr-6 md:pb-6 md:pt-6">{children}</main>
     </div>
   );
 }

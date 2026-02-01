@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-/** Prop IX logo image (three teal triangles + "PROP IX" text). Transparent background to match header. */
+/** Prop IX logo image (three teal triangles + "PROP IX" text). Background matches header (deep-teal-950). */
 export function PropIxLogo({
   className,
   href = "/",
@@ -16,7 +16,7 @@ export function PropIxLogo({
   const content = (
     <span
       className={cn(
-        "inline-flex items-center justify-center bg-transparent",
+        "inline-flex items-center justify-center bg-deep-teal-950",
         className
       )}
       style={{ minHeight: height }}

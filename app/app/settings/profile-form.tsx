@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { updateProfile, uploadAvatar } from "./profile-actions";
 import Image from "next/image";
+import { User } from "lucide-react";
 
 export type ProfileFormProps = {
   initial: { full_name: string | null; avatar_url: string | null; bio: string | null };
@@ -53,7 +54,7 @@ export function ProfileForm({ initial }: ProfileFormProps) {
     <div className="space-y-6">
       <form onSubmit={handleProfileSubmit} className="space-y-4">
         <div className="flex items-start gap-6">
-          <div className="shrink-0">
+          <div className="shrink-0 flex flex-col items-center">
             <div className="relative w-24 h-24 rounded-full overflow-hidden bg-deep-teal-800 border border-deep-teal-700">
               {avatarUrl ? (
                 <Image
@@ -65,12 +66,16 @@ export function ProfileForm({ initial }: ProfileFormProps) {
                   unoptimized
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-deep-teal-400 text-2xl font-medium">
-                  {fullName.charAt(0).toUpperCase() || "?"}
+                <div className="w-full h-full flex items-center justify-center text-deep-teal-400">
+                  {fullName.trim() ? (
+                    <span className="text-2xl font-medium">{fullName.charAt(0).toUpperCase()}</span>
+                  ) : (
+                    <User className="h-10 w-10" strokeWidth={1.5} />
+                  )}
                 </div>
               )}
             </div>
-            <div className="mt-2 flex flex-col gap-1">
+            <div className="mt-2 flex flex-col gap-1 items-center w-full">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -111,7 +116,7 @@ export function ProfileForm({ initial }: ProfileFormProps) {
                 placeholder="A short bio about you"
                 rows={3}
                 maxLength={500}
-                className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground"
+                className="flex w-full rounded-xl border border-deep-teal-700 bg-deep-teal-900 px-3 py-2 text-body text-deep-teal-50 placeholder:text-deep-teal-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-deep-teal-500 focus-visible:ring-offset-2 ring-offset-deep-teal-950"
               />
               <p className="text-body-sm text-deep-teal-400">{bio.length}/500</p>
             </div>
